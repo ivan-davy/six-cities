@@ -1,4 +1,3 @@
-import {Category} from './category.type.js';
 import {User} from './user.type.js';
 import {Coordinates} from './coordinates.type';
 
@@ -12,12 +11,11 @@ export type Offer = {
   premium: boolean;
   favorite: boolean;
   rating: number;
-  kind: string;
+  type: string;
   rooms: number;
   guests: number;
   price: number;
-  categories: Category[];
+  features: string[];
   user: User;
-  commentsQty: number;
   coordinates: Coordinates;
 }
