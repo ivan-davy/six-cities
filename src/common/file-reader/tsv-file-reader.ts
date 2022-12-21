@@ -24,8 +24,8 @@ export default class TSVFileReader implements FileReaderInterface {
         title, description, postedDate, city, imagePreview,
         images, premium, favorite, rating, kind,
         rooms, guests, price, categories,
-        commentsQty, coordinates, name, email, avatarPath,
-        password, status
+        name, email, avatarPath, password, status,
+        commentsQty, coordinates,
       ]) => ({
         title,
         description,
@@ -53,6 +53,6 @@ export default class TSVFileReader implements FileReaderInterface {
           latitude: coordinates.split(';')[0],
           longitude: coordinates.split(';')[1]
         }
-      }));
+      } as Offer));
   }
 }
