@@ -1,5 +1,5 @@
 import {UserType} from './user.type.js';
-import {CoordinatesType} from './coordinates.type';
+import {CoordinatesType} from './coordinates.type.js';
 
 export type OfferType = {
   title: string;

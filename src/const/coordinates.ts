@@ -1,5 +1,5 @@
 import {CoordinatesType} from '../types/coordinates.type';
-import {CityEnum} from '../types/city.enum';
+import {CityEnum} from '../types/city.enum.js';
 
 export const COORDINATES: {[city: string]: CoordinatesType} = {
   [CityEnum.Paris]: {latitude: '48.85661', longitude: '2.351499'},

@@ -1,7 +1,7 @@
 import {MockDataType} from '../types/mock-data.type';
-import {getRandomInteger, getRandomFloat, getRandomItem, getRandomSample} from '../service/random.js';
+import {getRandomInteger, getRandomFloat, getRandomItem, getRandomSample} from '../utils/random.js';
 import {OfferGeneratorInterface} from '../types/offer-generator.interface';
-import {COORDINATES} from '../const/cities-coordinates.js';
+import {COORDINATES} from '../const/coordinates.js';
 import {UserType} from '../types/user.type';
 
 const IMAGES_QTY = 6;
@@ -20,7 +20,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const description = getRandomItem<string>(this.mockData.descriptions);
     const postedDate = getRandomItem<string>(this.mockData.postedDates);
     const city = getRandomItem<string>(this.mockData.cities);
-    const coordinates = COORDINATES[city];
+    const coordinates = `${COORDINATES[city].latitude};${COORDINATES[city].longitude}`;
     const imagePreview = getRandomItem<string>(this.mockData.imagePreviews);
     const images = getRandomSample<string>(this.mockData.imagesSelection, IMAGES_QTY);
     const premium = getRandomItem<string>(['true', 'false']);
