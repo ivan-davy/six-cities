@@ -16,7 +16,7 @@ export const getRandomInteger = (min: number, max: number): number => {
 функция возвращает 0. Если min = max, возвращает это число. \
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random */
 
-export const getRandomFloat = (min:number, max:number): number => {
+export const getRandomFloat = (min: number, max: number): number => {
   let result = 0;
   if (min >= 0 && max >= 0 && min <= max) {
     result = Math.random() * (max - min) + min;
