@@ -1,7 +1,7 @@
 import {MockDataType} from '../types/mock-data.type';
 import {getRandomInteger, getRandomFloat, getRandomItem, getRandomSample} from '../utils/random.js';
 import {OfferGeneratorInterface} from '../types/offer-generator.interface';
-import {COORDINATES} from '../const/coordinates.js';
+import {COORDINATES} from '../const/coordinates.const';
 import {UserType} from '../types/user.type';
 
 const IMAGES_QTY = 6;
