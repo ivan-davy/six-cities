@@ -20,7 +20,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserType {
     this.status = data.status;
   }
 
-  @prop({ unique: true, required: true })
+  @prop({unique: true, required: true})
   public email!: string;
 
   @prop({default: ''})
@@ -32,7 +32,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserType {
   @prop({required: true, default: ''})
   public status!: string;
 
-  @prop({required: true, default: ''})
+  @prop({required: true})
   private password!: string;
 
   public setPassword(password: string, salt: string) {
