@@ -8,6 +8,7 @@ import ConfigService from './common/config/config.service.js';
 import Application from './app/application.js';
 import {DatabaseInterface} from './common/database-client/database.interface.js';
 import DatabaseService from './common/database-client/database.service.js';
+import {UserModel} from './modules/user/user.entity.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -17,3 +18,13 @@ applicationContainer.bind<DatabaseInterface>(Component.DatabaseInterface).to(Dat
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
+
+const user = await UserModel.create({
+  email: 'test@email.local',
+  avatarPath: 'keks.jpg',
+  name: 'Keks',
+  status: 'Unknown',
+  password: '123'
+});
+
+console.log(user);
