@@ -1,4 +1,4 @@
-import {UserType} from '../../types/user.type.js';
+import {BaseUserType, UserType} from '../../types/user.type.js';
 import typegoose, {getModelForClass, defaultClasses} from '@typegoose/typegoose';
 import {createSHA256} from '../../utils/common.js';
 
@@ -11,7 +11,7 @@ export interface UserEntity extends defaultClasses.Base {}
     collection: 'users'
   }
 })
-export class UserEntity extends defaultClasses.TimeStamps implements UserType {
+export class UserEntity extends defaultClasses.TimeStamps implements BaseUserType {
   constructor(data: UserType) {
     super();
     this.email = data.email;
@@ -33,7 +33,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserType {
   public status!: string;
 
   @prop({required: true})
-  public password!: string;
+  private password!: string;
 
   public setPassword(password: string, salt: string) {
     this.password = createSHA256(password, salt);

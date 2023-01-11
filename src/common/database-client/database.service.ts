@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import 'reflect-metadata';
 import {inject, injectable} from 'inversify';
 import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../logger/logger.interface.js';
