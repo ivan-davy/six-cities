@@ -50,10 +50,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    validate: {
+    /*validate: {
       validator: (list: string[]) => list.length === 6,
       message: 'An offer should always have 6 images'
-    },
+    },*/
   })
   public images!: string[];
 
