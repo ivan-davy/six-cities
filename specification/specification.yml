@@ -70,11 +70,11 @@ tags:
                   schema:
                     $ref: '#/components/schemas/offerDetailed'
 
-        patch:
+        post:
           tags:
             - offers
-          summary: Редактирование существующего объявления пользователя
-          description: Редактирует существующее объявление пользователя
+          summary: Редактирование существующего объявления пользователя.
+          description: Редактирует существующее объявление пользователя.
 
           requestBody:
             description: Информация для редактирования объявления.
@@ -126,7 +126,7 @@ tags:
         post:
           tags:
             - users
-          summary: Регистрация пользователя
+          summary: Регистрация пользователя.
           description: Регистрирует нового пользователя.
 
           requestBody:
@@ -134,7 +134,7 @@ tags:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/createUser'
+                  $ref: '#/components/schemas/userCreate'
             required: true
 
             responses:
@@ -150,17 +150,54 @@ tags:
 
 
       /users/login:
+        get:
+          tags:
+            - users
+          summary: Проверка состояния пользователя
+          description: Возвращает информацию по авторизованному пользователю
+
+          requestBody:
+            description: Предоставляемый токен.
+            content:
+              X-token:
+                type: string
+                example: poXa87kj4oknEWO434N
+
+          responses:
+            "201":
+              description: Пользователь авторизован. Токен пользователя.
+              content:
+                X-token:
+                  type: string
+                  example: poXa87kj4oknEWO434N
+
+            "401":
+              description: Пользователь не авторизован.
+
         post:
           tags:
             - users
           summary: Авторизация пользователя
           description: Авторизует пользователя по логину и паролю
 
-        get:
-          tags:
-            - users
-          summary: Проверка состояния пользователя
-          description: Возвращает информацию по авторизованному пользователю
+          requestBody:
+            description: Информация для аунтефикации.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/userLogin'
+            required: true
+
+            responses:
+              "201":
+                description: Успешная аунтефикация. Токен пользователя.
+                content:
+                  X-token:
+                    type: string
+                    example: poXa87kj4oknEWO434N
+
+              "400":
+                description: Введены некорректные данные / такого пользователя не существует.
 
       /users/logout:
         post:
@@ -169,13 +206,26 @@ tags:
           summary: Де-авторизует пользователя
           description: Выполняет выход из учетной записи пользователя
 
-      /users/{userId}/avatar:
-        post:
-          tags:
-            - users
-          summary: Загрузить изображение аватара
-          description: Загружает изображение аватара пользователя. Изображение
-            аватара должно быть в формате `png` или `jpg`.
+          requestBody:
+            description: Предоставляемый токен.
+            content:
+              X-token:
+                type: string
+                example: poXa87kj4oknEWO434N
+
+          responses:
+            "201":
+              description: Пользователь авторизован. Токен пользователя.
+              content:
+                X-token:
+                  type: string
+                  example: poXa87kj4oknEWO434N
+
+            "200":
+              description: Успешный выход из учетной записи.
+
+            "400":
+              description: Токен не прошел валидацию.
 
   - name: comments
     description: Действия с комментариями.
@@ -291,8 +341,20 @@ components:
         user:
           $ref: '#/components/schemas/user'
 
-    createUser:
+    userLogin:
       type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+        password:
+          type: string
+          example: 123456
+
+    userCreate:
+      type: object
+
       properties:
         email:
           type: string
@@ -326,7 +388,7 @@ components:
           type: string
           example: keks@htmlacademy.ru
 
-    newComment:
+    commentNew:
       type: object
 
       properties:
