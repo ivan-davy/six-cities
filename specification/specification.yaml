@@ -1,5 +1,6 @@
 openapi: 3.1.0
 info:
+  version: '1.0'
   title: API сервер для проекта six-cities.
 description: |-
   * Список ресурсов и маршрутов сервера six-cities.
@@ -117,7 +118,72 @@ tags:
             "403":
               description: Пользователь не обладает достаточными правами для удаления объявления.
 
+      /offers/premium/{city}:
+        get:
+          tags:
+            - offers
+          summary: Получение списка премиальных предложений для конкретного города.
+          description: Запрос на получение списка премиальных предложений для конкретного города.
 
+          responses:
+            "201":
+              description: Объекты предложений.
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/offer'
+
+      /offers/favorite:
+        get:
+          tags:
+            - offers
+          summary: Получение списка избранных предложений.
+          description: Запрос на получение списка избранных предложений для конкретного города. Только для авторизованных пользователей.
+
+          responses:
+            "201":
+              description: Объекты избранных предложений.
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/offer'
+
+        /offers/favorite/{offerId}:
+          post:
+            tags:
+              - offers
+            summary: Добавление предложения в список избранных.
+            description: Добавляет предложение в список избранных. Только для авторизованных пользователей.
+
+            response:
+              "201":
+                description: Объекты избранных предложений.
+                content:
+                  application/json:
+                    schema:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/offer'
+
+              "401":
+                description: Пользователь не авторизован.
+
+          delete:
+            tags:
+              - offers
+            summary: Удаление предложения из списка избранных.
+            description: Удаляет предложение из списка избранных. Только для авторизованных пользователей.
+
+            response:
+              "200":
+                description: Предложение удалено из избранных.
+
+              "401":
+                description: Пользователь не авторизован.
 
   - name: users
     description: Действия с пользователями.
@@ -193,7 +259,7 @@ tags:
                     example: poXa87kj4oknEWO434N
 
               "403":
-                description: Пользователь уже аунтефицирован.
+                description: Пользователь уже авторизован.
 
               "400":
                 description: Введены некорректные данные / такого пользователя не существует.
@@ -236,7 +302,10 @@ tags:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/comments'
+                    type: array
+                    items:
+                      type:
+                        $ref: '#/components/schemas/comment'
 
         post:
           tags:
@@ -271,7 +340,8 @@ components:
           example: Комната на двоих
 
         postedDate:
-          type: Date
+          type: string
+          format: date-time
 
         city:
           type: string
@@ -318,7 +388,8 @@ components:
           example: Уютная комната в отеле International
 
         postedDate:
-          type: Date
+          type: string
+          format: date-time
 
         city:
           type: string
@@ -367,8 +438,7 @@ components:
           example: [Fridge, Washer]
 
         coordinates:
-          type:
-            $ref: '#/components/schemas/coordinates'
+          $ref: '#/components/schemas/coordinates'
 
         user:
           $ref: '#/components/schemas/user'
@@ -445,14 +515,8 @@ components:
           example: 5
 
         createdAt:
-          type: Date
-
-    comments:
-      type: array
-
-      items:
-        type:
-          $ref: '#/components/schemas/comment'
+          type: string
+          format: date-time
 
     coordinates:
       type: object
