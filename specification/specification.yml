@@ -31,7 +31,7 @@ tags:
           tags:
             - offers
           summary: Создание нового объявления.
-          description: Создает новое объявление.
+          description: Создает новое объявление. Только для авторизованных пользователей.
 
           requestBody:
             description: Информация для создания объявления.
@@ -74,7 +74,7 @@ tags:
           tags:
             - offers
           summary: Редактирование существующего объявления пользователя.
-          description: Редактирует существующее объявление пользователя.
+          description: Редактирует существующее объявление пользователя. Только для авторизованных пользователей. Объявление должно принадлежать пользователю.
 
           requestBody:
             description: Информация для редактирования объявления.
@@ -105,7 +105,7 @@ tags:
           tags:
             - offers
           summary: Удаление объявления пользователя.
-          description: Удаляет объявление пользователя.
+          description: Удаляет объявление пользователя. Только для авторизованных пользователей. Объявление должно принадлежать пользователю.
 
           responses:
             "200":
@@ -145,6 +145,9 @@ tags:
                     schema:
                       $ref: '#/components/schemas/user'
 
+              "403":
+                description: Пользователь уже авторизован.
+
               "409":
                 description: Пользователь с таким email уже существует.
 
@@ -154,14 +157,7 @@ tags:
           tags:
             - users
           summary: Проверка состояния пользователя
-          description: Возвращает информацию по авторизованному пользователю
-
-          requestBody:
-            description: Предоставляемый токен.
-            content:
-              X-token:
-                type: string
-                example: poXa87kj4oknEWO434N
+          description: Возвращает информацию по статусу авторизации. Токен передается в header.
 
           responses:
             "201":
@@ -177,8 +173,8 @@ tags:
         post:
           tags:
             - users
-          summary: Авторизация пользователя
-          description: Авторизует пользователя по логину и паролю
+          summary: Авторизация пользователя.
+          description: Авторизует пользователя по логину и паролю. Только для неавторизованных пользователей.
 
           requestBody:
             description: Информация для аунтефикации.
@@ -196,6 +192,9 @@ tags:
                     type: string
                     example: poXa87kj4oknEWO434N
 
+              "403":
+                description: Пользователь уже аунтефицирован.
+
               "400":
                 description: Введены некорректные данные / такого пользователя не существует.
 
@@ -203,15 +202,8 @@ tags:
         post:
           tags:
             - users
-          summary: Де-авторизует пользователя
-          description: Выполняет выход из учетной записи пользователя
-
-          requestBody:
-            description: Предоставляемый токен.
-            content:
-              X-token:
-                type: string
-                example: poXa87kj4oknEWO434N
+          summary: Де-авторизует пользователя.
+          description: Выполняет выход из учетной записи пользователя. Только для авторизованных пользователей. Токен передается в header.
 
           responses:
             "201":
@@ -229,6 +221,44 @@ tags:
 
   - name: comments
     description: Действия с комментариями.
+
+    paths:
+      comments/{offerId}:
+        get:
+          tags:
+            - comments
+          summary: Получение комментариев к объявлению.
+          description: Запрашивает комментарии к объявлению. Не более 50 штук, отсортированы по новизне.
+
+          responses:
+            "201":
+              description: Список объектов комментариев.
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/comments'
+
+        post:
+          tags:
+            - comments
+          summary: Добавление комментария к объявлению.
+          description: Добавляет комментарий к объявлению. Только для авторизованных пользователей.
+
+          requestBody:
+            description: Объект нового комментария.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/commentNew'
+
+          responses:
+            "201":
+              description: Полный объект нового комментария.
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/comment'
+
 
 components:
   schemas:
@@ -299,7 +329,8 @@ components:
           example: previews/943853
 
         images:
-          type: string[]
+          type: array
+          items: string
           example: [images/340678.jpg, images/340679.jpg, images/340680.jpg, images/340682.jpg, images/340684.jpg, images/340685.jpg]
 
         premium:
@@ -331,7 +362,8 @@ components:
           example: 2000
 
         features:
-          type: string[]
+          type: array
+          items: string
           example: [Fridge, Washer]
 
         coordinates:
@@ -414,6 +446,13 @@ components:
 
         createdAt:
           type: Date
+
+    comments:
+      type: array
+
+      items:
+        type:
+          $ref: '#/components/schemas/comment'
 
     coordinates:
       type: object
