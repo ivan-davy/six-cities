@@ -443,6 +443,71 @@ components:
         user:
           $ref: '#/components/schemas/user'
 
+    offerUpdate:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: Комната на двоих
+
+        description:
+          type: string
+          example: Уютная комната в отеле International
+
+        postedDate:
+          type: string
+          format: date-time
+
+        city:
+          type: string
+          example: Amsterdam
+
+        imagePreview:
+          type: string
+          example: previews/943853
+
+        images:
+          type: array
+          items: string
+          example: [ images/340678.jpg, images/340679.jpg, images/340680.jpg, images/340682.jpg, images/340684.jpg, images/340685.jpg ]
+
+        premium:
+          type: boolean
+          example: true
+
+        favorite:
+          type: boolean
+          example: false
+
+        rating:
+          type: number
+          example: 4.3
+
+        type:
+          type: string
+          example: Apartment
+
+        rooms:
+          type: number
+          example: 2
+
+        guests:
+          type: number
+          example: 3
+
+        price:
+          type: number
+          example: 2000
+
+        features:
+          type: array
+          items: string
+          example: [ Fridge, Washer ]
+
+        coordinates:
+          $ref: '#/components/schemas/coordinates'
+
     userLogin:
       type: object
 
