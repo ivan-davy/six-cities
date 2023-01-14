@@ -1,4 +1,4 @@
-openapi: 3.0.2
+openapi: 3.0.0
 info:
   version: '1.0'
   title: API сервер для проекта six-cities.
@@ -16,7 +16,6 @@ tags:
     description: Действия с пользователями.
   - name: comments
     description: Действия с комментариями.
-
 
 
 paths:
@@ -64,6 +63,14 @@ paths:
           description: Пользователь не авторизован.
 
   /offers/{offerId}:
+    parameters:
+      - in: path
+        name: offerId   # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+
     get:
       tags:
         - offers
@@ -126,6 +133,20 @@ paths:
           description: Пользователь не обладает достаточными правами для удаления объявления.
 
   /offers/premium/{city}:
+    parameters:
+      - in: path
+        name: city   # Note the name is the same as in the path
+        required: true
+        schema:
+          type: string
+          enum:
+            - Amsterdam
+            - Dusseldorf
+            - Brussels
+            - Paris
+            - Cologne
+            - Hamburg
+
     get:
       tags:
         - offers
@@ -160,6 +181,14 @@ paths:
                   $ref: '#/components/schemas/offer'
 
   /offers/favorite/{offerId}:
+    parameters:
+      - in: path
+        name: offerId   # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+
     post:
       tags:
         - offers
@@ -288,6 +317,14 @@ paths:
 
 
   /comments/{offerId}:
+    parameters:
+      - in: path
+        name: offerId   # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+
     get:
       tags:
         - comments
@@ -302,8 +339,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type:
-                    $ref: '#/components/schemas/comment'
+                  $ref: '#/components/schemas/comment'
 
     post:
       tags:
@@ -398,7 +434,8 @@ components:
 
         images:
           type: array
-          items: string
+          items:
+            type: string
           example: [images/340678.jpg, images/340679.jpg, images/340680.jpg, images/340682.jpg, images/340684.jpg, images/340685.jpg]
 
         premium:
@@ -431,15 +468,18 @@ components:
 
         features:
           type: array
-          items: string
+          items:
+            type: string
           example: [Fridge, Washer]
 
         coordinates:
-          type:
+          type: object
+          items:
             $ref: '#/components/schemas/coordinates'
 
         user:
-          type:
+          type: object
+          items:
             $ref: '#/components/schemas/user'
 
     userLogin:
