@@ -30,10 +30,35 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async find(): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
-      .find()
-      .populate('user')
-      .exec();
+    return this.offerModel.aggregate([
+      {
+        $lookup: {
+          from: 'comments',
+          let: { thisOfferId: '$_id'},
+          pipeline: [
+            { $match: {'$$thisOfferId': '$offerId' }},
+            { $project: { _id: 1}}
+          ],
+          as: 'commentsForThisOffer'
+        },
+      },
+      { $addFields:
+          { id: { $toString: '$_id'}, commentsQty: { $size: '$commentsForThisOffer'} }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $unwind: {
+          path: '$user'
+        }
+      }
+    ]).exec();
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -45,7 +70,7 @@ export default class OfferService implements OfferServiceInterface {
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
-      .populate(['user'])
+      .populate('user')
       .exec();
   }
 
@@ -66,7 +91,7 @@ export default class OfferService implements OfferServiceInterface {
       .find()
       .sort({createdAt: SortType.Down})
       .limit(count)
-      .populate(['users'])
+      .populate(['user'])
       .exec();
   }
 
@@ -75,7 +100,7 @@ export default class OfferService implements OfferServiceInterface {
       .find()
       .sort({commentCount: SortType.Down})
       .limit(count)
-      .populate(['users'])
+      .populate(['user'])
       .exec();
   }
 }

@@ -14,7 +14,7 @@ export default class Application {
     @inject(Component.ConfigInterface) private config: ConfigInterface,
     @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
 
-    @inject(Component.OfferModel) private offerService: OfferServiceInterface) {}
+    @inject(Component.OfferServiceInterface) private offerService: OfferServiceInterface) {}
 
   public async init() {
     this.logger.info('Application initialization…');
