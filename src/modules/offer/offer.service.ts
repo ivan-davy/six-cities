@@ -7,6 +7,8 @@ import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import {SortType} from '../../types/sort-type.enum.js';
+import mongoose from 'mongoose';
+import {DEFAULT_OFFER_QTY, PROJECTED_FIELDS_FIND} from './offer.const.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -22,11 +24,35 @@ export default class OfferService implements OfferServiceInterface {
     return result;
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async findById(offerId: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .findById(offerId)
-      .populate('user')
-      .exec();
+      .aggregate([
+        {
+          $match: { '_id': new mongoose.Types.ObjectId(offerId) },
+        },
+        {
+          $lookup: {
+            from: 'comments',
+            localField: '_id',
+            foreignField: 'offerId',
+            as: 'commentQty'
+          }
+        },
+        {
+          $set: { 'commentQty': { $size: '$commentQty'}, }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user',
+            foreignField: '_id',
+            as: 'user'
+          }
+        },
+        {
+          $unwind: { path: '$user' }
+        }
+      ]).exec();
   }
 
   public async find(): Promise<DocumentType<OfferEntity>[]> {
@@ -34,30 +60,16 @@ export default class OfferService implements OfferServiceInterface {
       {
         $lookup: {
           from: 'comments',
-          let: { thisOfferId: '$_id'},
-          pipeline: [
-            { $match: {'$$thisOfferId': '$offerId' }},
-            { $project: { _id: 1}}
-          ],
-          as: 'commentsForThisOffer'
-        },
-      },
-      { $addFields:
-          { id: { $toString: '$_id'}, commentsQty: { $size: '$commentsForThisOffer'} }
-      },
+          localField: '_id',
+          foreignField: 'offerId',
+          as: 'commentQty'
+        }},
       {
-        $lookup: {
-          from: 'users',
-          localField: 'user',
-          foreignField: '_id',
-          as: 'user'
-        }
+        $set: { 'commentQty': { $size: '$commentQty'}, }
       },
-      {
-        $unwind: {
-          path: '$user'
-        }
-      }
+      { $project: PROJECTED_FIELDS_FIND },
+      { $sort: { postedDate: SortType.Down } },
+      { $limit: DEFAULT_OFFER_QTY },
     ]).exec();
   }
 
@@ -79,10 +91,10 @@ export default class OfferService implements OfferServiceInterface {
       .exists({_id: documentId})) !== null;
   }
 
-  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async incCommentQty(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, {'$inc': {
-        commentCount: 1,
+        commentQty: 1,
       }}).exec();
   }
 
@@ -98,7 +110,7 @@ export default class OfferService implements OfferServiceInterface {
   public async findFavorites(count: number): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find()
-      .sort({commentCount: SortType.Down})
+      .sort({commentQty: SortType.Down})
       .limit(count)
       .populate(['user'])
       .exec();

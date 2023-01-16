@@ -30,7 +30,7 @@ export default class Application {
 
     await this.databaseClient.connect(uri);
 
-    const data = await this.offerService.find();
+    const data = await this.offerService.findById('63c2121c428d47704ecaebca');
     console.log(data);
   }
 }
