@@ -31,26 +31,6 @@ export default class Application {
 
     await this.databaseClient.connect(uri);
 
-    const data = await this.offerService.updateById('6969121c428d47704ecaebca',
-      {
-        title: 'Cheap Hotel Rooms For Everyone',
-        description: 'Duis a lacus massa. Fusce viverra nisl justo, quis tristique massa varius et.',
-        postedDate: new Date('2022-04-06T08:45:40.283Z'),
-        city: 'Paris',
-        imagePreview: 'image1.png',
-        images: [
-          'image10.png,image12.png,image5.png,image1.png,image4.png,image6.png'
-        ],
-        premium: false,
-        favorite: true,
-        rating: 1.1,
-        type: 'Hotel',
-        features: [],
-        rooms: 16,
-        guests: 16,
-        price: 46198,
-        coordinates: { latitude: '48.85661', longitude: '2.351499' },
-      });
-    console.log(data);
+    await this.offerService.deleteById('63c2121c428d47704ecaebca');
   }
 }
