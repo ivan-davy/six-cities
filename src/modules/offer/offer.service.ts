@@ -63,7 +63,8 @@ export default class OfferService implements OfferServiceInterface {
           localField: '_id',
           foreignField: 'offerId',
           as: 'commentQty'
-        }},
+        }
+      },
       {
         $set: { 'commentQty': { $size: '$commentQty'}, }
       },
@@ -98,7 +99,8 @@ export default class OfferService implements OfferServiceInterface {
             localField: '_id',
             foreignField: 'offerId',
             as: 'commentQty'
-          }},
+          },
+        },
         {
           $set: { 'commentQty': { $size: '$commentQty'}, }
         }

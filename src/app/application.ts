@@ -31,7 +31,7 @@ export default class Application {
 
     await this.databaseClient.connect(uri);
 
-    const data = await this.offerService.findPremiumByCity('Dusseldorf');
+    const data = await this.offerService.find();
     console.log(data);
   }
 }
