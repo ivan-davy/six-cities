@@ -8,7 +8,7 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import {SortType} from '../../types/sort-type.enum.js';
 import mongoose from 'mongoose';
-import {DEFAULT_OFFER_QTY, PROJECTED_FIELDS_FIND} from './offer.const.js';
+import {DEFAULT_OFFER_QTY, DEFAULT_PREMIUM_OFFER_QTY, PROJECTED_FIELDS_FIND} from './offer.const.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -117,21 +117,16 @@ export default class OfferService implements OfferServiceInterface {
       }}).exec();
   }
 
-  public async findPremiumByCity(count: number): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find()
+      .find({city: city, premium: true})
+      .select(PROJECTED_FIELDS_FIND)
       .sort({createdAt: SortType.Down})
-      .limit(count)
-      .populate(['user'])
+      .limit(DEFAULT_PREMIUM_OFFER_QTY)
       .exec();
   }
 
-  public async findFavorites(count: number): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
-      .find()
-      .sort({commentQty: SortType.Down})
-      .limit(count)
-      .populate(['user'])
-      .exec();
+  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel.find().exec(); // WIP
   }
 }

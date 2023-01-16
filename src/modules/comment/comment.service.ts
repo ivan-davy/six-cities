@@ -4,6 +4,8 @@ import {CommentServiceInterface} from './comment-service.interface.js';
 import {Component} from '../../types/component.types.js';
 import {CommentEntity} from './comment.entity.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
+import {SortType} from '../../types/sort-type.enum.js';
+import {DEFAULT_COMMENT_QTY} from './comment.const.js';
 
 @injectable()
 export default class CommentService implements CommentServiceInterface {
@@ -19,7 +21,9 @@ export default class CommentService implements CommentServiceInterface {
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[]> {
     return this.commentModel
       .find({offerId})
-      .populate('userId');
+      .populate('userId')
+      .sort({['createdAt']: SortType.Down})
+      .limit(DEFAULT_COMMENT_QTY);
   }
 
   public async deleteByOfferId(offerId: string): Promise<number> {

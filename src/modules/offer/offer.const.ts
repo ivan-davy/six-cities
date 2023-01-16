@@ -1,5 +1,7 @@
 export const DEFAULT_OFFER_QTY = 60;
 
+export const DEFAULT_PREMIUM_OFFER_QTY = 3;
+
 export const PROJECTED_FIELDS_FIND = {
   title: 1,
   postedDate: 1,

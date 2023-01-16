@@ -31,6 +31,7 @@ export default class Application {
 
     await this.databaseClient.connect(uri);
 
-    await this.offerService.deleteById('63c2121c428d47704ecaebca');
+    const data = await this.offerService.findPremiumByCity('Dusseldorf');
+    console.log(data);
   }
 }
