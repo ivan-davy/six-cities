@@ -79,11 +79,42 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, dto, {new: true})
-      .populate('user')
-      .exec();
+  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | Promise<DocumentType<OfferEntity>[]> | null> {
+    if (await this.offerModel.exists(new mongoose.Types.ObjectId(offerId))) {
+      return this.offerModel
+        .findByIdAndUpdate(offerId, dto, {new: true})
+        .populate('user')
+        .exec();
+    } else {
+      return this.offerModel
+        .aggregate([
+          {
+            $match: { '_id': new mongoose.Types.ObjectId(offerId) },
+          },
+          {
+            $lookup: {
+              from: 'comments',
+              localField: '_id',
+              foreignField: 'offerId',
+              as: 'commentQty'
+            }
+          },
+          {
+            $set: { 'commentQty': { $size: '$commentQty'}, }
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'user'
+            }
+          },
+          {
+            $unwind: { path: '$user' }
+          }
+        ]).exec();
+    }
   }
 
   public async exists(documentId: string): Promise<boolean> {
