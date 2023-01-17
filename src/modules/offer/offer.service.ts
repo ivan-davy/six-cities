@@ -39,7 +39,19 @@ export default class OfferService implements OfferServiceInterface {
           }
         },
         {
-          $set: { 'commentQty': { $size: '$commentQty'}, }
+          $addFields: {
+            rating: {
+              $avg: {
+                $map: {
+                  input: '$commentQty',
+                  in: '$$this.rated'
+                }
+              }
+            }
+          }
+        },
+        {
+          $set: { 'commentQty': { $size: '$commentQty'} }
         },
         {
           $lookup: {
@@ -83,9 +95,9 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity>[] | null> {
-    const isFound = await this.offerModel
+    const documentExists = await this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true});
-    if (!isFound) {
+    if (!documentExists) {
       return null;
     }
     return this.offerModel
