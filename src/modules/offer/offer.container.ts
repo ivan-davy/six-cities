@@ -4,8 +4,8 @@ import {OfferEntity, OfferModel} from './offer.entity.js';
 import {OfferServiceInterface} from './offer-service.interface.js';
 import OfferService from './offer.service.js';
 import {Component} from '../../types/component.types.js';
-import {ControllerInterface} from '../../common/controller/controller.interface';
-import OfferController from './offer.controller';
+import {ControllerInterface} from '../../common/controller/controller.interface.js';
+import OfferController from './offer.controller.js';
 
 const offerContainer = new Container();
 

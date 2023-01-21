@@ -8,6 +8,7 @@ import {OfferServiceInterface} from './Offer-service.interface.js';
 import {StatusCodes} from 'http-status-codes';
 import {fillDTO} from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
+import OffersResponse from './response/offers.response.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -17,24 +18,24 @@ export default class OfferController extends Controller {
       //@inject(Component.ConfigInterface) private readonly configService: ConfigInterface,
   ) {
     super(logger);
-    this.logger.info('Register routes for OfferController…');
+    this.logger.info('Registering routes for OfferController…');
 
-    this.addRoute({path: '/offers', method: HttpMethod.Get, handler: this.index});
-    //this.addRoute({path: '/offers', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/offers/:offerId', method: HttpMethod.Get, handler: this.indexByOfferId});
-    //this.addRoute({path: '/offers/:offerId', method: HttpMethod.Post, handler: this.updateById});
-    //this.addRoute({path: '/offers/:offerId', method: HttpMethod.Delete, handler: this.deleteById});
-    //this.addRoute({path: '/offers/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
+    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    //this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexByOfferId});
+    //this.addRoute({path: '/:offerId', method: HttpMethod.Post, handler: this.updateById});
+    //this.addRoute({path: ':offerId', method: HttpMethod.Delete, handler: this.deleteById});
+    //this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
 
-    //this.addRoute({path: '/offers/favorite', method: HttpMethod.Get, handler: this.indexFavorite});
-    //this.addRoute({path: '/offers/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
-    //this.addRoute({path: '/offers/favorite/:offerId', method: HttpMethod.Delete, handler: this.deleteFavorite});
+    //this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite});
+    //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
+    //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Delete, handler: this.deleteFavorite});
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
     const offers = await this.offerService.find();
-    const offerResponse = fillDTO(OfferResponse, offers);
-    this.send(res, StatusCodes.OK, offerResponse);
+    const offersResponse = fillDTO(OffersResponse, offers);
+    this.send(res, StatusCodes.OK, offersResponse);
   }
 
   /*public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,

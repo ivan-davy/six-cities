@@ -65,7 +65,7 @@ export const createSHA256 = (line: string, salt: string): string => {
 };
 
 export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
-  plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+  plainToInstance(someDto, plainObject, {excludeExtraneousValues: true, excludePrefixes: ['_']});
 
 export const createErrorObject = (message: string) => ({
   error: message,

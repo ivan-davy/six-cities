@@ -17,8 +17,7 @@ export default class CommentController extends Controller {
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {
     super(logger);
-
-    this.logger.info('Register routes for CommentController…');
+    this.logger.info('Registering routes for CommentController…');
 
     this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexByOfferId});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});

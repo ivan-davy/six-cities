@@ -134,7 +134,7 @@ paths:
   /offers/premium/{city}:
     parameters:
       - in: path
-        name: city   # Note the name is the same as in the path
+        name: city
         required: true
         schema:
           type: string
@@ -182,7 +182,7 @@ paths:
   /offers/favorite/{offerId}:
     parameters:
       - in: path
-        name: offerId   # Note the name is the same as in the path
+        name: offerId
         required: true
         schema:
           type: integer

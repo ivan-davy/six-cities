@@ -9,6 +9,8 @@ import {getURI} from '../utils/db.js';
 import {ControllerInterface} from '../common/controller/controller.interface';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
 import {OfferServiceInterface} from '../modules/offer/offer-service.interface';
+import {fillDTO} from '../utils/common.js';
+import OfferResponse from '../modules/offer/response/offer.response.js';
 //import {CommentServiceInterface} from '../modules/comment/comment-service.interface';
 
 
@@ -36,8 +38,8 @@ export default class Application {
 
   public initRoutes() {
     this.expressApp.use('/offers', this.offerController.router);
-    this.expressApp.use('/comments', this.commentController.router);
     this.expressApp.use('/users', this.userController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   public initExceptionFilters() {
@@ -64,7 +66,9 @@ export default class Application {
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
-    const data = await this.offerService.findById('63ca732165f4a67420c775a9');
-    console.log(data);
+
+    const offer = await this.offerService.findById('63ca732165f4a67420c775bf');
+    const offerResponse = fillDTO(OfferResponse, offer);
+    console.log(offerResponse);
   }
 }
