@@ -10,6 +10,7 @@ import {fillDTO} from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import OffersResponse from './response/offers.response.js';
 import CreateOfferDto from './dto/create-offer.dto';
+//import UpdateOfferDto from './dto/update-offer.dto';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -23,8 +24,8 @@ export default class OfferController extends Controller {
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexByOfferId});
-    //this.addRoute({path: '/:offerId', method: HttpMethod.Post, handler: this.updateById});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexById});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Post, handler: this.updateById});
     //this.addRoute({path: ':offerId', method: HttpMethod.Delete, handler: this.deleteById});
     //this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
 
@@ -39,7 +40,8 @@ export default class OfferController extends Controller {
     this.send(res, StatusCodes.OK, offersResponse);
   }
 
-  public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+  public async create(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
     res: Response): Promise<void> {
 
     const result = await this.offerService.create(body);
@@ -50,9 +52,19 @@ export default class OfferController extends Controller {
     );
   }
 
-  public async indexByOfferId(req: Request, res: Response): Promise<void> {
+  public async indexById(req: Request, res: Response): Promise<void> {
     const offer = await this.offerService.findById(req.params.offerId);
     const offerResponse = fillDTO(OfferResponse, offer);
     this.send(res, StatusCodes.OK, offerResponse);
+  }
+
+  public async updateById({params, body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+    res: Response): Promise<void> {
+    const result = await this.offerService.updateById(params.offerId as string, body);
+    this.send(
+      res,
+      StatusCodes.CREATED,
+      fillDTO(OfferResponse, result)
+    );
   }
 }
