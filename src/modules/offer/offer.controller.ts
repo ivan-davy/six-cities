@@ -30,8 +30,8 @@ export default class OfferController extends Controller {
     this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
 
     this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite}); // WIP - пока не работает
-    //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
-    //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Delete, handler: this.deleteFavorite});
+    this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
+    this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Delete, handler: this.removeFavorite});
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
@@ -79,9 +79,21 @@ export default class OfferController extends Controller {
     this.send(res, StatusCodes.OK, offersResponse);
   }
 
-  public async indexFavorite(_req: Request, res: Response): Promise<void> {
+  public async indexFavorite(_req: Request, res: Response): Promise<void> { // WIP
     const offers = await this.offerService.findFavorites();
     const offersResponse = fillDTO(OffersResponse, offers);
     this.send(res, StatusCodes.OK, offersResponse);
+  }
+
+  public async addFavorite(req: Request, res: Response): Promise<void> { // WIP
+    const offer = await this.offerService.addFavorite(req.params.offerId);
+    const offerResponse = fillDTO(OfferResponse, offer);
+    this.send(res, StatusCodes.OK, offerResponse);
+  }
+
+  public async removeFavorite(req: Request, res: Response): Promise<void> { // WIP
+    const offer = await this.offerService.removeFavorite(req.params.offerId);
+    const offerResponse = fillDTO(OfferResponse, offer);
+    this.send(res, StatusCodes.OK, offerResponse);
   }
 }

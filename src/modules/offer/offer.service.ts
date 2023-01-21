@@ -141,10 +141,20 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async findFavorites(): Promise<DocumentType<OfferEntity>[]> { // WIP
+    console.log('Not yet implemented');
     return this.offerModel
-      .find({favorite: true})
-      .select(PROJECTED_FIELDS_FIND)
-      .sort({createdAt: SortType.Down})
-      .exec();
+      .aggregate().exec();
+  }
+
+  public async addFavorite(offerId: string): Promise<DocumentType<OfferEntity>[]> { // WIP
+    console.log('Not yet implemented', offerId);
+    return this.offerModel
+      .aggregate().exec();
+  }
+
+  public async removeFavorite(offerId: string): Promise<DocumentType<OfferEntity>[]> { // WIP
+    console.log('Not yet implemented', offerId);
+    return this.offerModel
+      .aggregate().exec();
   }
 }
