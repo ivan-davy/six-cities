@@ -1,9 +1,9 @@
-import {OfferType} from '../types/offer.type';
+import {CreateOfferType} from '../types/offer.type';
 import crypto from 'crypto';
 import {plainToInstance} from 'class-transformer';
 import {ClassConstructor} from 'class-transformer/types/interfaces/class-constructor.type.js';
 
-export const createOffer = (row: string): OfferType => {
+export const createOffer = (row: string): CreateOfferType => {
   const items = row.replace('\n', '').split('\t');
   const [
     title,
@@ -14,7 +14,6 @@ export const createOffer = (row: string): OfferType => {
     imagePreview,
     images,
     premium,
-    favorite,
     rating,
     type,
     rooms,
@@ -26,6 +25,7 @@ export const createOffer = (row: string): OfferType => {
     avatarPath,
     password,
     status,
+    favorites
   ] = items;
   return {
     title,
@@ -37,21 +37,21 @@ export const createOffer = (row: string): OfferType => {
       longitude: coordinates.split(';')[1]
     },
     imagePreview,
-    images: images.split(';'),
+    images: images.split(','),
     premium: premium === 'true',
-    favorite: favorite === 'true',
     rating: Number(rating),
     type,
     rooms: Number(rooms),
     guests: Number(guests),
     price: Number(price),
-    features: features.split(';'),
+    features: features.split(','),
     user: {
       name,
       email,
       avatarPath,
       password,
       status,
+      favorites: favorites.split(';')
     },
   };
 };

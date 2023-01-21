@@ -12,4 +12,7 @@ export default class UserResponse {
 
   @Expose()
   public status!: string;
+
+  @Expose()
+  public favorites!: string;
 }
