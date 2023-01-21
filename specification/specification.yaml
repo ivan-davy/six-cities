@@ -65,11 +65,10 @@ paths:
   /offers/{offerId}:
     parameters:
       - in: path
-        name: offerId   # Note the name is the same as in the path
+        name: offerId
         required: true
         schema:
-          type: integer
-          minimum: 1
+          type: string
 
     get:
       tags:

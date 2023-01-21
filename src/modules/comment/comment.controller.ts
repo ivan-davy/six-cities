@@ -27,8 +27,8 @@ export default class CommentController extends Controller {
   public async indexByOfferId(req: Request, res: Response): Promise<void> { // WIP
     const comments = await this.commentService.findByOfferId(req.params.offerId);
     this.send(res, StatusCodes.OK, comments);
-    const categoryResponse = fillDTO(CommentResponse, comments);
-    this.send(res, StatusCodes.OK, categoryResponse);
+    const commentResponse = fillDTO(CommentResponse, comments);
+    this.send(res, StatusCodes.OK, commentResponse);
   }
 
   public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>, // WIP
