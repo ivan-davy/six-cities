@@ -20,6 +20,7 @@ export default class Application {
     @inject(Component.ConfigInterface) private config: ConfigInterface,
     @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
     @inject(Component.CommentController) private commentController: ControllerInterface,
+    @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
 
     @inject(Component.OfferServiceInterface) private offerService: OfferServiceInterface,
@@ -33,7 +34,8 @@ export default class Application {
   }
 
   public initRoutes() {
-    this.expressApp.use('/categories', this.commentController.router);
+    this.expressApp.use('/comments', this.commentController.router);
+    this.expressApp.use('/users', this.userController.router);
   }
 
   public initExceptionFilters() {
@@ -52,6 +54,7 @@ export default class Application {
       this.config.get('DB_NAME'),
     );
 
+    this.initExceptionFilters();
     this.initMiddleware();
     this.initRoutes();
     await this.databaseClient.connect(uri);

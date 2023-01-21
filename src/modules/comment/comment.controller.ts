@@ -20,12 +20,12 @@ export default class CommentController extends Controller {
 
     this.logger.info('Register routes for CommentController…');
 
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.indexByOfferId});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexByOfferId});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
   }
 
-  public async indexByOfferId(_req: Request, res: Response): Promise<void> { // WIP
-    const comments = await this.commentService.findByOfferId('63ca732165f4a67420c775a9');
+  public async indexByOfferId(req: Request, res: Response): Promise<void> { // WIP
+    const comments = await this.commentService.findByOfferId(req.params.offerId);
     this.send(res, StatusCodes.OK, comments);
     const categoryResponse = fillDTO(CommentResponse, comments);
     this.send(res, StatusCodes.OK, categoryResponse);
