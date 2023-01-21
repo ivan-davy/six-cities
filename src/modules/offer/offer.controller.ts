@@ -9,6 +9,7 @@ import {StatusCodes} from 'http-status-codes';
 import {fillDTO} from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import OffersResponse from './response/offers.response.js';
+import CreateOfferDto from './dto/create-offer.dto';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -21,7 +22,7 @@ export default class OfferController extends Controller {
     this.logger.info('Registering routes for OfferController…');
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
-    //this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexByOfferId});
     //this.addRoute({path: '/:offerId', method: HttpMethod.Post, handler: this.updateById});
     //this.addRoute({path: ':offerId', method: HttpMethod.Delete, handler: this.deleteById});
@@ -38,16 +39,16 @@ export default class OfferController extends Controller {
     this.send(res, StatusCodes.OK, offersResponse);
   }
 
-  /*public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,
+  public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
     res: Response): Promise<void> {
 
-    const result = await this.offerService.;
+    const result = await this.offerService.create(body);
     this.send(
       res,
       StatusCodes.CREATED,
-      fillDTO(CommentResponse, result)
+      fillDTO(OfferResponse, result)
     );
-  }*/
+  }
 
   public async indexByOfferId(req: Request, res: Response): Promise<void> {
     const offer = await this.offerService.findById(req.params.offerId);

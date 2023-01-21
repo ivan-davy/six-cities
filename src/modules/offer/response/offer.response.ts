@@ -50,4 +50,7 @@ export default class OfferResponse {
 
   @Expose()
   public user!: UserType;
+
+  @Expose()
+  public commentQty!: number;
 }
