@@ -8,11 +8,9 @@ import {DatabaseInterface} from '../common/database-client/database.interface';
 import {getURI} from '../utils/db.js';
 import {ControllerInterface} from '../common/controller/controller.interface';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
-import {OfferServiceInterface} from '../modules/offer/offer-service.interface';
+import {OfferServiceInterface} from '../modules/offer/offer-service.interface.js';
 import {fillDTO} from '../utils/common.js';
-import OfferResponse from '../modules/offer/response/offer.response.js';
-//import {CommentServiceInterface} from '../modules/comment/comment-service.interface';
-
+import OffersResponse from '../modules/offer/response/offers.response.js';
 
 @injectable()
 export default class Application {
@@ -67,8 +65,8 @@ export default class Application {
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
 
-    const offer = await this.offerService.findById('63ca732165f4a67420c775bf');
-    const offerResponse = fillDTO(OfferResponse, offer);
-    console.log(offerResponse);
+    const offers = await this.offerService.findFavorites();
+    const offersResponse = fillDTO(OffersResponse, offers);
+    console.log(offersResponse);
   }
 }

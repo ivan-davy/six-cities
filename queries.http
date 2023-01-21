@@ -84,9 +84,15 @@ DELETE http://localhost:4000/offers/63cbe744c7769870cc3c774e HTTP/1.1
 
 ###
 
-## Получить список Premium-предложений в определенном городе
+## Получить список premium-предложений в определенном городе
 
 GET http://localhost:4000/offers/premium/Dusseldorf HTTP/1.1
+
+###
+
+## Получить список favorite-предложений авторизованного пользователя - WIP
+
+GET http://localhost:4000/offers/favorite HTTP/1.1
 
 ###
 

@@ -11,7 +11,6 @@ import OfferResponse from './response/offer.response.js';
 import OffersResponse from './response/offers.response.js';
 import CreateOfferDto from './dto/create-offer.dto';
 import UpdateOfferDto from './dto/update-offer.dto';
-//import UpdateOfferDto from './dto/update-offer.dto';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -30,7 +29,7 @@ export default class OfferController extends Controller {
     this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.deleteById});
     this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
 
-    //this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite});
+    this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite}); // WIP - пока не работает
     //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
     //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Delete, handler: this.deleteFavorite});
   }
@@ -71,13 +70,17 @@ export default class OfferController extends Controller {
 
   public async deleteById(req: Request, res: Response): Promise<void> {
     await this.offerService.deleteById(req.params.offerId as string);
-    this.send(
-      res,
-      StatusCodes.OK);
+    this.send(res, StatusCodes.OK);
   }
 
   public async indexPremiumByCity(req: Request, res: Response): Promise<void> {
     const offers = await this.offerService.findPremiumByCity(req.params.city);
+    const offersResponse = fillDTO(OffersResponse, offers);
+    this.send(res, StatusCodes.OK, offersResponse);
+  }
+
+  public async indexFavorite(_req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavorites();
     const offersResponse = fillDTO(OffersResponse, offers);
     this.send(res, StatusCodes.OK, offersResponse);
   }

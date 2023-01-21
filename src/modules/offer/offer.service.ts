@@ -140,7 +140,11 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel.find().exec(); // WIP
+  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> { // WIP
+    return this.offerModel
+      .find({favorite: true})
+      .select(PROJECTED_FIELDS_FIND)
+      .sort({createdAt: SortType.Down})
+      .exec();
   }
 }
