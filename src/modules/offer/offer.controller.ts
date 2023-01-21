@@ -10,6 +10,7 @@ import {fillDTO} from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import OffersResponse from './response/offers.response.js';
 import CreateOfferDto from './dto/create-offer.dto';
+import UpdateOfferDto from './dto/update-offer.dto';
 //import UpdateOfferDto from './dto/update-offer.dto';
 
 @injectable()
@@ -26,7 +27,7 @@ export default class OfferController extends Controller {
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexById});
     this.addRoute({path: '/:offerId', method: HttpMethod.Post, handler: this.updateById});
-    //this.addRoute({path: ':offerId', method: HttpMethod.Delete, handler: this.deleteById});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.deleteById});
     //this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
 
     //this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite});
@@ -58,7 +59,7 @@ export default class OfferController extends Controller {
     this.send(res, StatusCodes.OK, offerResponse);
   }
 
-  public async updateById({params, body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+  public async updateById({params, body}: Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
     res: Response): Promise<void> {
     const result = await this.offerService.updateById(params.offerId as string, body);
     this.send(
@@ -66,5 +67,12 @@ export default class OfferController extends Controller {
       StatusCodes.CREATED,
       fillDTO(OfferResponse, result)
     );
+  }
+
+  public async deleteById(req: Request, res: Response): Promise<void> {
+    await this.offerService.deleteById(req.params.offerId as string);
+    this.send(
+      res,
+      StatusCodes.OK);
   }
 }
