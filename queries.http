@@ -8,7 +8,6 @@ GET http://localhost:3123/api HTTP/1.1
 ## Получить список предложений
 
 GET http://localhost:4000/offers HTTP/1.1
-Content-Type: application/json
 
 ###
 
@@ -24,7 +23,7 @@ Content-Type: application/json
   "city": "Hamburg",
   "imagePreview": "image99.png",
   "images": [
-    "image1.png,image2.png,image3.png,image4.png,image5.png,image100.png"
+    "image1.png", "image2.png", "image3.png", "image4.png", "image5.png", "image100.png"
   ],
   "premium": true,
   "favorite": true,
@@ -45,7 +44,7 @@ Content-Type: application/json
 
 ## Редактировать предложение
 
-POST http://localhost:4000/offers/63cbe50d6f6aa67db1d3d1ce HTTP/1.1
+POST http://localhost:4000/offers/63cbefb7c41295de4bca8578 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -55,7 +54,7 @@ Content-Type: application/json
   "city": "Hamburg",
   "imagePreview": "image99.png",
   "images": [
-    "image1.png,image2.png,image3.png,image4.png,image5.png,image100.png"
+    "image1.png", "image2.png", "image3.png", "image4.png", "image5.png", "image100.png"
   ],
   "premium": false,
   "favorite": false,
@@ -76,13 +75,18 @@ Content-Type: application/json
 ## Получить конкретное предложение по offerId
 
 GET http://localhost:4000/offers/63ca732165f4a67420c775a9 HTTP/1.1
-Content-Type: application/json
 
 ###
 
 ## Удалить предложение по offerId
 
-DELETE http://localhost:4000/offers/63ca732165f4a67420c775c2 HTTP/1.1
+DELETE http://localhost:4000/offers/63cbe744c7769870cc3c774e HTTP/1.1
+
+###
+
+## Получить список Premium-предложений в определенном городе
+
+GET http://localhost:4000/offers/premium/Dusseldorf HTTP/1.1
 
 ###
 

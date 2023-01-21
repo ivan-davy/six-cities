@@ -28,7 +28,7 @@ export default class OfferController extends Controller {
     this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.indexById});
     this.addRoute({path: '/:offerId', method: HttpMethod.Post, handler: this.updateById});
     this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.deleteById});
-    //this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
+    this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremiumByCity});
 
     //this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite});
     //this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
@@ -74,5 +74,11 @@ export default class OfferController extends Controller {
     this.send(
       res,
       StatusCodes.OK);
+  }
+
+  public async indexPremiumByCity(req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findPremiumByCity(req.params.city);
+    const offersResponse = fillDTO(OffersResponse, offers);
+    this.send(res, StatusCodes.OK, offersResponse);
   }
 }
