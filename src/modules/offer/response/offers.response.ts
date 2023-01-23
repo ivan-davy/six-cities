@@ -2,6 +2,9 @@ import {Expose} from 'class-transformer';
 import {UserType} from '../../../types/user.type';
 
 export default class OffersResponse {
+  @Expose({name: '_id'})
+  public id!: string;
+
   @Expose()
   public title!: string;
 

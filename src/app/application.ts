@@ -65,8 +65,8 @@ export default class Application {
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
 
-    const offers = await this.offerService.findFavorites();
-    const offersResponse = fillDTO(OffersResponse, offers);
+    const offers = await this.offerService.find();
+    const offersResponse = fillDTO(OffersResponse, offers[0]);
     console.log(offersResponse);
   }
 }

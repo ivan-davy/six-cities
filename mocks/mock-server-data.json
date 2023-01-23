@@ -81,7 +81,7 @@
         "email": "tttyy@gmal.com",
         "avatarPath": "avt2.jpg",
         "password": "fg635e",
-        "status": "Default",
+        "status": "Standard",
         "favorites": "50;112;567"
       },
       {
@@ -97,7 +97,7 @@
         "email": "jjj@outlook.com",
         "avatarPath": "avt4.jpg",
         "password": "kkjjkkk",
-        "status": "Default",
+        "status": "Standard",
         "favorites": "769;65;124"
       },
       {
@@ -105,7 +105,7 @@
         "email": "bm@gmail.com",
         "avatarPath": "avt5.jpg",
         "password": "sdfgjkjhgf",
-        "status": "Default",
+        "status": "Standard",
         "favorites": "553;674;1356"
       }
     ]

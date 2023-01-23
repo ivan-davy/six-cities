@@ -4,6 +4,7 @@ import {UserEntity} from '../user/user.entity.js';
 import {CityEnum} from '../../types/city.enum.js';
 import {TypeEnum} from '../../types/type.enum.js';
 import {CoordinatesType} from '../../types/coordinates.type.js';
+import {FeatureEnum} from '../../types/feature.enum.js';
 
 const {prop, modelOptions} = typegoose;
 
@@ -102,6 +103,14 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     max: 100000,
   })
   public price!: number;
+
+  @prop({
+    required: true,
+    default: [],
+    type: () => String,
+    enum: FeatureEnum,
+  })
+  public features!: string[];
 
   @prop({})
   public commentQty!: number;
