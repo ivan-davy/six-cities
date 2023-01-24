@@ -67,7 +67,8 @@ export default class OfferService implements OfferServiceInterface {
       ]).exec();
   }
 
-  public async find(): Promise<DocumentType<OfferEntity>[]> {
+  public async find(limit?: number | null): Promise<DocumentType<OfferEntity>[]> {
+    const qty = limit ?? DEFAULT_OFFER_QTY;
     return this.offerModel.aggregate([
       {
         $lookup: {
@@ -82,7 +83,7 @@ export default class OfferService implements OfferServiceInterface {
       },
       { $project: PROJECTED_FIELDS_FIND },
       { $sort: { postedDate: SortType.Down } },
-      { $limit: DEFAULT_OFFER_QTY },
+      { $limit: qty },
     ]).exec();
   }
 
