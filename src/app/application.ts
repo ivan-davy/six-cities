@@ -62,13 +62,7 @@ export default class Application {
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
-    const result = await this.commentService.create(
-      {
-        'text': 'Текст комментария!',
-        'offerId': '63ce1d6467a156218d344ad6',
-        'userId': '63ce1b03b04f2962a9285bbb',
-        'rated': 4
-      });
+    const result = await this.commentService.findByOfferId('63ce1d6467a156218d344ad6');
     console.log(result);
   }
 }
