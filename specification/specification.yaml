@@ -554,6 +554,10 @@ components:
           type: number
           example: 5
 
+        user:
+          type: string
+          example: 63ce1b03b04f2962a9285bbb
+
     comment:
       type: object
 
@@ -566,7 +570,7 @@ components:
           type: number
           example: 5
 
-        createdAt:
+        postedDate:
           type: string
           format: date-time
 

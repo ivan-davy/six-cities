@@ -8,7 +8,7 @@ import {DatabaseInterface} from '../common/database-client/database.interface';
 import {getURI} from '../utils/db.js';
 import {ControllerInterface} from '../common/controller/controller.interface';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
-import {OfferServiceInterface} from '../modules/offer/offer-service.interface';
+import {CommentServiceInterface} from '../modules/comment/comment-service.interface.js';
 
 @injectable()
 export default class Application {
@@ -22,7 +22,7 @@ export default class Application {
     @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
 
-    @inject(Component.OfferServiceInterface) private offerService: OfferServiceInterface,
+    @inject(Component.CommentServiceInterface) private commentService: CommentServiceInterface,
     //@inject(Component.CommentServiceInterface) private commentService: CommentServiceInterface
   ) {
     this.expressApp = express();
@@ -62,7 +62,13 @@ export default class Application {
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
-    const result = await this.offerService.find();
+    const result = await this.commentService.create(
+      {
+        'text': 'Текст комментария!',
+        'offerId': '63ce1d6467a156218d344ad6',
+        'userId': '63ce1b03b04f2962a9285bbb',
+        'rated': 4
+      });
     console.log(result);
   }
 }
