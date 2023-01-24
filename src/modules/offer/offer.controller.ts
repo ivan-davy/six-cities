@@ -12,6 +12,7 @@ import OffersResponse from './response/offers.response.js';
 import CreateOfferDto from './dto/create-offer.dto';
 import UpdateOfferDto from './dto/update-offer.dto';
 import HttpError from '../../common/errors/http-error.js';
+import {ValidateObjectIdMiddleware} from '../../middlewares/validate-objectid.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -25,14 +26,33 @@ export default class OfferController extends Controller {
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.find});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.findById});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Patch, handler: this.updateById});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.deleteById});
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.findById,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]});
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.updateById,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]});
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.deleteById,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]});
     this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.findPremiumByCity});
-
     this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.findFavorite}); // WIP - пока не работает
-    this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite});
-    this.addRoute({path: '/favorite/:offerId', method: HttpMethod.Delete, handler: this.removeFavorite});
+    this.addRoute({
+      path: '/favorite/:offerId',
+      method: HttpMethod.Post,
+      handler: this.addFavorite,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]});
+    this.addRoute({
+      path: '/favorite/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.removeFavorite,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]});
   }
 
   public async find(req: Request, res: Response): Promise<void> {

@@ -88,6 +88,10 @@ paths:
                 items:
                   $ref: '#/components/schemas/offerDetailed'
 
+        "400":
+          description: Некорректный id.
+
+
     patch:
       tags:
         - offers
@@ -128,6 +132,9 @@ paths:
       responses:
         "200":
           description: Объявление удалено.
+
+        "400":
+          description: Некорректный id.
 
         "401":
           description: Пользователь не авторизован.
@@ -208,6 +215,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/offer'
 
+        "400":
+          description: Некорректный id.
+
         "401":
           description: Пользователь не авторизован.
 
@@ -220,6 +230,9 @@ paths:
       responses:
         "200":
           description: Предложение удалено из избранных.
+
+        "400":
+          description: Некорректный id.
 
         "401":
           description: Пользователь не авторизован.

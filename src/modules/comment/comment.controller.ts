@@ -11,6 +11,7 @@ import {fillDTO} from '../../utils/common.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 import {OfferServiceInterface} from '../offer/offer-service.interface.js';
+import {ValidateObjectIdMiddleware} from '../../middlewares/validate-objectid.js';
 
 @injectable()
 export default class CommentController extends Controller {
@@ -22,7 +23,11 @@ export default class CommentController extends Controller {
     super(logger);
     this.logger.info('Registering routes for CommentController…');
 
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.findByOfferId});
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.findByOfferId,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
   }
 
