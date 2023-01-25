@@ -9,10 +9,11 @@ import {StatusCodes} from 'http-status-codes';
 import {fillDTO} from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import OffersResponse from './response/offers.response.js';
-import CreateOfferDto from './dto/create-offer.dto';
-import UpdateOfferDto from './dto/update-offer.dto';
+import CreateOfferDto from './dto/create-offer.dto.js';
+import UpdateOfferDto from './dto/update-offer.dto.js';
 import HttpError from '../../common/errors/http-error.js';
-import {ValidateObjectIdMiddleware} from '../../middlewares/validate-objectid.js';
+import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.js';
+import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -25,7 +26,12 @@ export default class OfferController extends Controller {
     this.logger.info('Registering routes for OfferController…');
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.find});
-    this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+    });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Get,

@@ -11,7 +11,7 @@ import {fillDTO} from '../../utils/common.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 import {OfferServiceInterface} from '../offer/offer-service.interface.js';
-import {ValidateObjectIdMiddleware} from '../../middlewares/validate-objectid.js';
+import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.js';
 
 @injectable()
 export default class CommentController extends Controller {
