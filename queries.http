@@ -26,7 +26,7 @@ Content-Type: application/json
   ],
   "premium": true,
   "favorite": true,
-  "rating": 1,
+  "rating": 3.8,
   "type": "Apartment",
   "rooms": 6,
   "guests": 1,
@@ -122,9 +122,9 @@ Content-Type: application/json
 
 {
  "text": "Текст комментария!",
- "offerId": "63ce1d6467a156218d344ad6",
+ "offerId": "63ce1d6467a156218d344ad0",
  "userId": "63ce1b03b04f2962a9285bbb",
- "rated": 5
+ "rated": 6
 }
 
 ###

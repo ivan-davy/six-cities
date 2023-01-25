@@ -20,7 +20,6 @@ export default class OfferController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
-      //@inject(Component.ConfigInterface) private readonly configService: ConfigInterface,
   ) {
     super(logger);
     this.logger.info('Registering routes for OfferController…');
