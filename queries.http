@@ -16,7 +16,7 @@ POST http://localhost:4000/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "POST OFFER TEST",
+  "title": "TestingTestingTesting",
   "description": "TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST",
   "postedDate": "2030-04-06T08:45:40.283Z",
   "city": "Hamburg",
@@ -36,14 +36,14 @@ Content-Type: application/json
     "latitude": "53.550341",
     "longitude": "10.000654"
   },
-  "user": "63ca732165f4a67420c775a7"
+  "user": "63d111add06b054080a10262"
 }
 
 ###
 
 ## Редактировать предложение
 
-PATCH http://localhost:4000/offers/63ce1d6467a156218d344aa5 HTTP/1.1
+PATCH http://localhost:4000/offers/63d11bd0e7e2206bee22f64a HTTP/1.1
 Content-Type: application/json
 
 {
@@ -136,9 +136,9 @@ POST http://localhost:4000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
- "email": "torans1@overlook.net",
+ "email": "torans6@overlook.net",
  "avatarPath": "torrance.png",
- "name": "Jack",
+ "name": "",
  "status": "Premium",
  "lastname": "Torrance",
  "password": "shining"
