@@ -15,6 +15,7 @@ import HttpError from '../../common/errors/http-error.js';
 import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
+import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -30,40 +31,69 @@ export default class OfferController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto),
+      ]
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.findById,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]});
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.updateById,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]});
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.deleteById,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]});
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
     this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.findPremiumByCity});
-    this.addRoute({path: '/favorite', method: HttpMethod.Get, handler: this.findFavorite}); // WIP - пока не работает
+    this.addRoute({
+      path: '/favorite',
+      method: HttpMethod.Get,
+      handler: this.findFavorite,
+      middlewares: [
+        new PrivateRouteMiddleware()
+      ]
+    });
     this.addRoute({
       path: '/favorite/:offerId',
       method: HttpMethod.Post,
       handler: this.addFavorite,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]});
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
     this.addRoute({
       path: '/favorite/:offerId',
       method: HttpMethod.Delete,
       handler: this.removeFavorite,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]});
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
   }
 
   public async find(req: Request, res: Response): Promise<void> {
@@ -74,10 +104,10 @@ export default class OfferController extends Controller {
   }
 
   public async create(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+    req: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
     res: Response): Promise<void> {
 
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({...req.body, user: req.user.id});
     this.send(
       res,
       StatusCodes.CREATED,

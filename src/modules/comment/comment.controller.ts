@@ -14,6 +14,7 @@ import {OfferServiceInterface} from '../offer/offer-service.interface.js';
 import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
+import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 
 @injectable()
 export default class CommentController extends Controller {
@@ -29,13 +30,20 @@ export default class CommentController extends Controller {
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.findByOfferId,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.commentService, 'Comments', 'offerId')]});
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.commentService, 'Comments', 'offerId')
+      ]
+    });
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)]});
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto)
+      ]
+    });
   }
 
   public async findByOfferId(req: Request, res: Response): Promise<void> { // WIP
@@ -51,19 +59,19 @@ export default class CommentController extends Controller {
     this.ok(res, fillDTO(CommentResponse, comments));
   }
 
-  public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,
+  public async create(req: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,
     res: Response): Promise<void> {
 
-    if (!await this.offerService.exists(body.offerId)) {
+    if (!await this.offerService.exists(req.body.offerId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id ${body.offerId} not found.`,
+        `Offer with id ${req.body.offerId} not found.`,
         'CommentController'
       );
     }
 
-    const comment = await this.commentService.create(body);
-    await this.offerService.incCommentQty(body.offerId);
+    const comment = await this.commentService.create({...req.body, userId: req.user.id});
+    await this.offerService.incCommentQty(req.body.offerId);
     this.created(res, fillDTO(CommentResponse, comment));
   }
 }

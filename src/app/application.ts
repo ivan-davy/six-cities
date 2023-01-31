@@ -8,6 +8,7 @@ import {DatabaseInterface} from '../common/database-client/database.interface.js
 import {getURI} from '../utils/db.js';
 import {ControllerInterface} from '../common/controller/controller.interface.js';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
+import {AuthenticateMiddleware} from '../common/middlewares/authenticate.middleware.js';
 
 @injectable()
 export default class Application {
@@ -33,6 +34,8 @@ export default class Application {
       '/uploads',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
     );
+    const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
+    this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
   }
 
   public initRoutes() {
