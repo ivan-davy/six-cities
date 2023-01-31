@@ -16,6 +16,7 @@ export default class OfferService implements OfferServiceInterface {
   constructor(
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(Component.UserModel) private readonly userModel: types.ModelType<OfferEntity>,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {}
 
@@ -143,19 +144,36 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> { // WIP
-    console.log('Not yet implemented');
-    return this.offerModel
-      .find().exec();
+  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
+    return this.userModel
+      .aggregate([
+        {
+          $match: { '_id': new mongoose.Types.ObjectId(userId) }
+        },
+        {
+          $project: { _id: 0, favorites: 1 }
+        },
+        {
+          $lookup: {
+            from: 'offers',
+            localField: 'favorites',
+            foreignField: '_id',
+            as: 'favorites'
+          }
+        },
+        {
+          $unwind: '$favorites'
+        }
+      ]).exec();
   }
 
-  public async addFavorite(offerId: string): Promise<DocumentType<OfferEntity>[]> { // WIP
+  public async addFavorite(_userId: string, offerId: string): Promise<DocumentType<OfferEntity>[]> {
     console.log('Not yet implemented', offerId);
     return this.offerModel
       .find().exec();
   }
 
-  public async removeFavorite(offerId: string): Promise<DocumentType<OfferEntity>[]> { // WIP
+  public async removeFavorite(_userId: string, offerId: string): Promise<DocumentType<OfferEntity>[]> {
     console.log('Not yet implemented', offerId);
     return this.offerModel
       .find().exec();

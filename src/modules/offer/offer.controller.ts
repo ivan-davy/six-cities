@@ -65,7 +65,11 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
     });
-    this.addRoute({path: '/premium/:city', method: HttpMethod.Get, handler: this.findPremiumByCity});
+    this.addRoute({
+      path: '/premium/:city',
+      method: HttpMethod.Get,
+      handler: this.findPremiumByCity
+    });
     this.addRoute({
       path: '/favorite',
       method: HttpMethod.Get,
@@ -165,20 +169,20 @@ export default class OfferController extends Controller {
     this.send(res, StatusCodes.OK, offersResponse);
   }
 
-  public async findFavorite(_req: Request, res: Response): Promise<void> { // WIP
-    const offers = await this.offerService.findFavorites();
+  public async findFavorite(req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavorites(req.user.id);
     const offersResponse = fillDTO(OffersResponse, offers);
     this.send(res, StatusCodes.OK, offersResponse);
   }
 
-  public async addFavorite(req: Request, res: Response): Promise<void> { // WIP
-    const offer = await this.offerService.addFavorite(req.params.offerId);
+  public async addFavorite(req: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.addFavorite(req.user.id, req.params.offerId);
     const offerResponse = fillDTO(OfferResponse, offer);
     this.send(res, StatusCodes.OK, offerResponse);
   }
 
-  public async removeFavorite(req: Request, res: Response): Promise<void> { // WIP
-    const offer = await this.offerService.removeFavorite(req.params.offerId);
+  public async removeFavorite(req: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.removeFavorite(req.user.id, req.params.offerId);
     const offerResponse = fillDTO(OfferResponse, offer);
     this.send(res, StatusCodes.OK, offerResponse);
   }

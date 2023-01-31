@@ -9,6 +9,7 @@ import {getURI} from '../utils/db.js';
 import {ControllerInterface} from '../common/controller/controller.interface.js';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
 import {AuthenticateMiddleware} from '../common/middlewares/authenticate.middleware.js';
+import {OfferServiceInterface} from '../modules/offer/offer-service.interface.js';
 
 @injectable()
 export default class Application {
@@ -22,7 +23,7 @@ export default class Application {
     @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
 
-    //@inject(Component.CommentServiceInterface) private commentService: CommentServiceInterface,
+    @inject(Component.OfferServiceInterface) private offerService: OfferServiceInterface,
     //@inject(Component.CommentServiceInterface) private commentService: CommentServiceInterface
   ) {
     this.expressApp = express();
@@ -67,5 +68,8 @@ export default class Application {
 
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
+
+    const result = await this.offerService.findFavorites('63d97cf55c19b0f61c65c86a');
+    console.log(result);
   }
 }

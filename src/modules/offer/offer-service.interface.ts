@@ -12,8 +12,8 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
   updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity>[] | null>;
   incCommentQty(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]>;
-  findFavorites(): Promise<DocumentType<OfferEntity>[]>;
-  addFavorite(offerId: string): Promise<DocumentType<OfferEntity>[]>;
-  removeFavorite(offerId: string): Promise<DocumentType<OfferEntity>[]>;
+  findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]>;
+  addFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[]>;
+  removeFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[]>;
   exists(documentId: string): Promise<boolean>;
 }
