@@ -69,7 +69,7 @@ export default class Application {
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
-    const result = await this.offerService.findFavorites('63d97cf55c19b0f61c65c86a');
+    const result = await this.offerService.removeFavorite('63d97cf55c19b0f61c65c86a', '63c2121c428d47704ecaebe9');
     console.log(result);
   }
 }

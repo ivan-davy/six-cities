@@ -71,7 +71,7 @@ export default class OfferController extends Controller {
       handler: this.findPremiumByCity
     });
     this.addRoute({
-      path: '/favorite',
+      path: '/favorite/get',
       method: HttpMethod.Get,
       handler: this.findFavorite,
       middlewares: [
@@ -176,14 +176,12 @@ export default class OfferController extends Controller {
   }
 
   public async addFavorite(req: Request, res: Response): Promise<void> {
-    const offer = await this.offerService.addFavorite(req.user.id, req.params.offerId);
-    const offerResponse = fillDTO(OfferResponse, offer);
-    this.send(res, StatusCodes.OK, offerResponse);
+    await this.offerService.addFavorite(req.user.id, req.params.offerId);
+    this.ok(res, StatusCodes.OK);
   }
 
   public async removeFavorite(req: Request, res: Response): Promise<void> {
-    const offer = await this.offerService.removeFavorite(req.user.id, req.params.offerId);
-    const offerResponse = fillDTO(OfferResponse, offer);
-    this.send(res, StatusCodes.OK, offerResponse);
+    await this.offerService.removeFavorite(req.user.id, req.params.offerId);
+    this.ok(res, StatusCodes.OK);
   }
 }

@@ -9,14 +9,17 @@ import UpdateOfferDto from './dto/update-offer.dto.js';
 import {SortType} from '../../types/sort-type.enum.js';
 import mongoose from 'mongoose';
 import {DEFAULT_OFFER_QTY, DEFAULT_PREMIUM_OFFER_QTY, PROJECTED_FIELDS_FIND} from './offer.const.js';
-import {CommentServiceInterface} from '../comment/comment-service.interface';
+import {CommentServiceInterface} from '../comment/comment-service.interface.js';
+import {UserServiceInterface} from '../user/user-service.interface.js';
+
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
   constructor(
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
-    @inject(Component.UserModel) private readonly userModel: types.ModelType<OfferEntity>,
+    //@inject(Component.UserModel) private readonly userModel: types.ModelType<OfferEntity>,
+    @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {}
 
@@ -144,38 +147,31 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
-    return this.userModel
+  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      return null;
+    }
+
+    return this.offerModel
       .aggregate([
         {
-          $match: { '_id': new mongoose.Types.ObjectId(userId) }
-        },
-        {
-          $project: { _id: 0, favorites: 1 }
-        },
-        {
-          $lookup: {
-            from: 'offers',
-            localField: 'favorites',
-            foreignField: '_id',
-            as: 'favorites'
+          $match: {
+            _id: {
+              $in: user.favorites.map((id) => new mongoose.Types.ObjectId(id))
+            }
           }
         },
-        {
-          $unwind: '$favorites'
-        }
+        { $project: PROJECTED_FIELDS_FIND },
       ]).exec();
   }
 
-  public async addFavorite(_userId: string, offerId: string): Promise<DocumentType<OfferEntity>[]> {
-    console.log('Not yet implemented', offerId);
-    return this.offerModel
-      .find().exec();
+  public async addFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userService.addToFavoritesById(userId, offerId);
   }
 
-  public async removeFavorite(_userId: string, offerId: string): Promise<DocumentType<OfferEntity>[]> {
-    console.log('Not yet implemented', offerId);
-    return this.offerModel
-      .find().exec();
+  public async removeFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userService.removeFromFavoritesById(userId, offerId);
   }
 }
