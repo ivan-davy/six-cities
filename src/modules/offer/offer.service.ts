@@ -197,13 +197,15 @@ export default class OfferService implements OfferServiceInterface {
   ): Promise<DocumentType<OfferEntity>[] | DocumentType<OfferEntity>> {
 
     if (!userId) {
-      console.log('NO USER');
       return data;
     }
 
     const currentUser = await this.userService.findById(userId as string);
-    const favorites = currentUser?.favorites.map((item) => item.toString()) as string[];
+    if (!currentUser) {
+      return data;
+    }
 
+    const favorites = currentUser?.favorites.map((item) => item.toString()) as string[];
     if (Array.isArray(data)) {
       data.map((obj) => {
         obj.favorite = favorites.includes(obj._id.toString());
