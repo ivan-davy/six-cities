@@ -16,15 +16,12 @@ import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-obje
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
-import {SetFavoriteMiddleware} from '../../common/middlewares/set-favorite.middleware.js';
-import {UserServiceInterface} from '../user/user-service.interface.js';
 
 @injectable()
 export default class OfferController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
-    @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
   ) {
     super(logger);
     this.logger.info('Registering routes for OfferController…');
@@ -32,10 +29,7 @@ export default class OfferController extends Controller {
     this.addRoute({
       path: '/',
       method: HttpMethod.Get,
-      handler: this.find,
-      middlewares: [
-        new SetFavoriteMiddleware(this.userService),
-      ]
+      handler: this.find
     });
     this.addRoute({
       path: '/',
@@ -114,7 +108,7 @@ export default class OfferController extends Controller {
 
   public async find(req: Request, res: Response): Promise<void> {
     const limit = isNaN(Number(req.query.limit)) ? null : Number(req.query.limit);
-    const offers = await this.offerService.find(limit);
+    const offers = await this.offerService.find(req.user.id, limit);
     const offersResponse = fillDTO(OffersResponse, offers);
     this.send(res, StatusCodes.OK, offersResponse);
   }

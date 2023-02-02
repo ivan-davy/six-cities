@@ -6,7 +6,7 @@ GET http://localhost:3123/api HTTP/1.1
 # Предложения
 ## Получить список предложений
 
-GET http://localhost:4000/offers?limit=3 HTTP/1.1
+GET http://localhost:4000/offers?limit=10 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2submV0IiwiaWQiOiI2M2Q5N2NmNTVjMTliMGY2MWM2NWM4NmEiLCJpYXQiOjE2NzUxOTc3MzAsImV4cCI6MTY3NTM3MDUzMH0.WJEOgFQM0TNmKXZvjsGLdwKnWgYowRG-VuLP46ISPGo
 
 

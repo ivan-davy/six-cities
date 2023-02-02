@@ -16,8 +16,10 @@ export class SetFavoriteMiddleware implements MiddlewareInterface {
     const currentUser = await this.userService.findById(req.user.id);
     const favorites = currentUser?.favorites.map((item) => item.toString());
 
-    console.log(favorites);
-    console.log(res);
+    res.on('finish', () => {
+      console.log(favorites);
+      console.log(res);
+    });
 
     return next();
   }

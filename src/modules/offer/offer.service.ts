@@ -12,6 +12,7 @@ import {DEFAULT_OFFER_QTY, DEFAULT_PREMIUM_OFFER_QTY, PROJECTED_FIELDS_FIND} fro
 import {CommentServiceInterface} from '../comment/comment-service.interface.js';
 import {UserServiceInterface} from '../user/user-service.interface.js';
 
+
 @injectable()
 export default class OfferService implements OfferServiceInterface {
   constructor(
@@ -71,9 +72,9 @@ export default class OfferService implements OfferServiceInterface {
       ]).exec();
   }
 
-  public async find(limit?: number | null): Promise<DocumentType<OfferEntity>[]> {
+  public async find(userId: string | undefined, limit?: number | null): Promise<DocumentType<OfferEntity>[]> {
     const qty = limit ?? DEFAULT_OFFER_QTY;
-    return this.offerModel.aggregate([
+    const result = await this.offerModel.aggregate([
       {
         $lookup: {
           from: 'comments',
@@ -89,6 +90,7 @@ export default class OfferService implements OfferServiceInterface {
       { $sort: { postedDate: SortType.Down } },
       { $limit: qty },
     ]).exec();
+    return this.setFavorite<DocumentType<OfferEntity>[]>(result, userId);
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -171,5 +173,36 @@ export default class OfferService implements OfferServiceInterface {
 
   public async removeFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
     return this.userService.removeFromFavoritesById(userId, offerId);
+  }
+
+  public async setFavorite<T>(
+    data: T,
+    userId: string | unknown,
+  ): Promise<T> {
+
+    if (!userId) {
+      return data;
+    }
+
+    const currentUser = await this.userService.findById(userId as string);
+    const favorites = currentUser?.favorites.map((item) => item.toString()) as string[];
+
+    if (Array.isArray(data)) {
+      data.map((obj) => {
+        if (favorites.includes(obj._id.toString())) {
+          obj.favorite = true;
+        }
+      });
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (favorites.includes(data._id.toString())) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        data.favorite = true;
+      }
+    }
+
+    return data;
   }
 }
