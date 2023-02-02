@@ -126,7 +126,7 @@ export default class OfferController extends Controller {
   }
 
   public async findById(req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findById(req.params.offerId);
+    const offers = await this.offerService.findById(req.params.offerId, req.user?.id);
     if (offers?.length === 0) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
@@ -170,7 +170,7 @@ export default class OfferController extends Controller {
   }
 
   public async findPremiumByCity(req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findPremiumByCity(req.params.city);
+    const offers = await this.offerService.findPremiumByCity(req.params.city, req.user?.id);
     const offersResponse = fillDTO(OffersResponse, offers);
     this.send(res, StatusCodes.OK, offersResponse);
   }
