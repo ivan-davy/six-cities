@@ -12,13 +12,11 @@ import {DEFAULT_OFFER_QTY, DEFAULT_PREMIUM_OFFER_QTY, PROJECTED_FIELDS_FIND} fro
 import {CommentServiceInterface} from '../comment/comment-service.interface.js';
 import {UserServiceInterface} from '../user/user-service.interface.js';
 
-
 @injectable()
 export default class OfferService implements OfferServiceInterface {
   constructor(
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
-    //@inject(Component.UserModel) private readonly userModel: types.ModelType<OfferEntity>,
     @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {}

@@ -7,6 +7,8 @@ GET http://localhost:3123/api HTTP/1.1
 ## Получить список предложений
 
 GET http://localhost:4000/offers?limit=3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2submV0IiwiaWQiOiI2M2Q5N2NmNTVjMTliMGY2MWM2NWM4NmEiLCJpYXQiOjE2NzUxOTc3MzAsImV4cCI6MTY3NTM3MDUzMH0.WJEOgFQM0TNmKXZvjsGLdwKnWgYowRG-VuLP46ISPGo
+
 
 ###
 
@@ -110,7 +112,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2sub
 
 ## Удалить предложение из списка "избранное" авторизованного пользователя
 
-DELETE http://localhost:4000/offers/favorite/63cc1704978bd83622df7f39 HTTP/1.1
+DELETE http://localhost:4000/offers/favorite/63c2121c428d47704ecaebe9 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2submV0IiwiaWQiOiI2M2Q5N2NmNTVjMTliMGY2MWM2NWM4NmEiLCJpYXQiOjE2NzUxOTc3MzAsImV4cCI6MTY3NTM3MDUzMH0.WJEOgFQM0TNmKXZvjsGLdwKnWgYowRG-VuLP46ISPGo
 
 

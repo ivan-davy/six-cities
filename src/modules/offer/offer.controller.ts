@@ -12,21 +12,31 @@ import OffersResponse from './response/offers.response.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import HttpError from '../../common/errors/http-error.js';
-import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.js';
+import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.middleware.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
+import {SetFavoriteMiddleware} from '../../common/middlewares/set-favorite.middleware.js';
+import {UserServiceInterface} from '../user/user-service.interface.js';
 
 @injectable()
 export default class OfferController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
+    @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
   ) {
     super(logger);
     this.logger.info('Registering routes for OfferController…');
 
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.find});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.find,
+      middlewares: [
+        new SetFavoriteMiddleware(this.userService),
+      ]
+    });
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
@@ -42,7 +52,7 @@ export default class OfferController extends Controller {
       handler: this.findById,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
     });
     this.addRoute({
@@ -52,7 +62,7 @@ export default class OfferController extends Controller {
       middlewares: [
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
     });
     this.addRoute({
@@ -68,14 +78,16 @@ export default class OfferController extends Controller {
     this.addRoute({
       path: '/premium/:city',
       method: HttpMethod.Get,
-      handler: this.findPremiumByCity
+      handler: this.findPremiumByCity,
+      middlewares: [
+      ]
     });
     this.addRoute({
       path: '/favorite/get',
       method: HttpMethod.Get,
       handler: this.findFavorite,
       middlewares: [
-        new PrivateRouteMiddleware()
+        new PrivateRouteMiddleware(),
       ]
     });
     this.addRoute({
