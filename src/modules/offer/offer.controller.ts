@@ -122,7 +122,7 @@ export default class OfferController extends Controller {
 
   public async find(req: Request, res: Response): Promise<void> {
     const limit = isNaN(Number(req.query.limit)) ? null : Number(req.query.limit);
-    const offers = await this.offerService.find(req.user.id, limit);
+    const offers = await this.offerService.find(req.user?.id, limit);
     const offersResponse = fillDTO(OffersResponse, offers);
     this.send(res, StatusCodes.OK, offersResponse);
   }

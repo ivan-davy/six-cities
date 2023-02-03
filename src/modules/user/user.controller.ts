@@ -63,6 +63,7 @@ export default class UserController extends Controller {
     const existsUser = await this.userService.findByEmail(body.email);
 
     if (existsUser) {
+      res.status(StatusCodes.CONFLICT);
       throw new HttpError(
         StatusCodes.CONFLICT,
         `User with email «${body.email}» exists.`,
@@ -84,7 +85,8 @@ export default class UserController extends Controller {
   ): Promise<void> {
     const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
 
-    if (! user) {
+    if (!user) {
+      res.status(StatusCodes.FORBIDDEN);
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
         'Unauthorized',
