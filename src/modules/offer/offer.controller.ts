@@ -17,6 +17,8 @@ import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middl
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 import {ConfigInterface} from '../../common/config/config.interface.js';
+import {UploadFileMiddleware} from '../../common/middlewares/upload-file.middleware.js';
+import UploadImagePreviewResponse from './response/upload-image-preview.response.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -106,6 +108,16 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
     });
+    this.addRoute({
+      path: '/:offerId/image-preview',
+      method: HttpMethod.Post,
+      handler: this.uploadImagePreview,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ]
+    });
   }
 
   public async find(req: Request, res: Response): Promise<void> {
@@ -191,5 +203,11 @@ export default class OfferController extends Controller {
   public async removeFavorite(req: Request, res: Response): Promise<void> {
     await this.offerService.removeFavorite(req.user.id, req.params.offerId);
     this.ok(res, StatusCodes.OK);
+  }
+
+  public async uploadImagePreview(req: Request, res: Response) {
+    const updateDto = { imagePreview: req.file?.filename };
+    await this.offerService.updateById(req.params.offerId, updateDto);
+    this.created(res, fillDTO(UploadImagePreviewResponse, {updateDto}));
   }
 }

@@ -6,8 +6,8 @@ import * as jose from 'jose';
 import {ValidationError} from 'class-validator';
 import {ValidationErrorField} from '../types/validation-error-field.type.js';
 import {ServiceError} from '../types/service-error.enum.js';
-import {UnknownObject} from '../types/unknown-object.type';
-import {DEFAULT_STATIC_IMAGES} from '../app/application.constant';
+import {UnknownObject} from '../types/unknown-object.type.js';
+import {DEFAULT_STATIC_IMAGES} from '../app/application.constant.js';
 
 export const createOffer = (row: string): CreateOfferType => {
   const items = row.replace('\n', '').split('\t');
