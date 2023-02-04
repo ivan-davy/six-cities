@@ -102,7 +102,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2sub
 ## Получить список favorite-предложений авторизованного пользователя
 
 GET http://localhost:4000/offers/favorite/get HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2submV0IiwiaWQiOiI2M2RiZThkNjM5MmFlNmI3OWFhOWJmMGUiLCJpYXQiOjE2NzU0NDY2NzAsImV4cCI6MTY3NTYxOTQ3MH0.rfvinnJ1gu8Q4Axzz1vgdSNiKFb5SW_nIWCzAJ5PNCo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImRlbW9uQGhlbGwuY29tIiwiaWQiOiI2M2RlYmMzNmM1M2VjOGMwMzgwYjFkM2EiLCJpYXQiOjE2NzU1NDE2MzcsImV4cCI6MTY3NTcxNDQzN30.ScqpKoWEHEZXTc1rM7_u6ElMYguhPHsHkYdDJ_qO9lc
 
 
 ###
@@ -171,8 +171,8 @@ Content-Type: application/json
 
 
 {
- "email": "torans8@overlook.net",
- "password": "shining"
+ "email": "demon@hell.com",
+ "password": "mortalflesh"
 }
 
 ###
@@ -180,7 +180,7 @@ Content-Type: application/json
 ## Проверка токена пользователя
 
 GET http://localhost:4000/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczhAb3Zlcmxvb2submV0IiwiaWQiOiI2M2RlODEzZmY3M2I2ZGFjMjg0MmNmNDciLCJpYXQiOjE2NzU1MjczNzQsImV4cCI6MTY3NTcwMDE3NH0.Hougk8F6MNW40wTL-PAK2Bbvvu0e_00kGriCSOPe7Fo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImRlbW9uQGhlbGwuY29tIiwiaWQiOiI2M2RlYmMzNmM1M2VjOGMwMzgwYjFkM2EiLCJpYXQiOjE2NzU1NDE2MzcsImV4cCI6MTY3NTcxNDQzN30.ScqpKoWEHEZXTc1rM7_u6ElMYguhPHsHkYdDJ_qO9lc
 ###
 
 ## Загрузка аватарки пользователю
