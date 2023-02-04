@@ -1,4 +1,8 @@
-export default class CreateOfferDto {
+import SafeUserResponse from '../user/safe-user.response';
+
+export default class OfferResponse {
+  public id!: string;
+
   public title!: string;
 
   public description!: string;
@@ -12,6 +16,8 @@ export default class CreateOfferDto {
   public images!: string[];
 
   public premium!: boolean;
+
+  public favorite!: boolean;
 
   public rating!: number;
 
@@ -27,6 +33,7 @@ export default class CreateOfferDto {
 
   public coordinates!: Location;
 
-  public user!: string;
-}
+  public user!: SafeUserResponse;
 
+  public commentQty!: number;
+}

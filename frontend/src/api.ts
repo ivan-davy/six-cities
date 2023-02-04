@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
-import { Token } from './utils';
+import { Token } from './utils/utils';
 
-const BACKEND_URL = 'http://localhost:4000';
+export const BACKEND_URL = 'http://localhost:4000';
 const REQUEST_TIMEOUT = 5000;
 
 export const createAPI = (): AxiosInstance => {

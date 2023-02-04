@@ -78,8 +78,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2sub
 
 ## Получить конкретное предложение по offerId
 
-GET http://localhost:4000/offers/63dbdaa12b280076f4626107 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2submV0IiwiaWQiOiI2M2RiZThkNjM5MmFlNmI3OWFhOWJmMGUiLCJpYXQiOjE2NzU0NDY2NzAsImV4cCI6MTY3NTYxOTQ3MH0.rfvinnJ1gu8Q4Axzz1vgdSNiKFb5SW_nIWCzAJ5PNCo
+GET http://localhost:4000/offers/63de60bd9ee86dc4fa0bf715 HTTP/1.1
 
 
 ###

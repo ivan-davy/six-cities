@@ -1,4 +1,4 @@
-export default class CreateOfferDto {
+export default class UpdateOfferDto {
   public title?: string;
 
   public description?: string;

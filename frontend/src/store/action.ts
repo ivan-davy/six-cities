@@ -1,9 +1,12 @@
-import type { History } from 'history';
-import type { AxiosInstance, AxiosError } from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { UserAuth, User, Offer, Comment, CommentAuth, FavoriteAuth, UserRegister, NewOffer } from '../types/types';
-import { ApiRoute, AppRoute, HttpCode } from '../const';
-import { Token } from '../utils';
+import type {History} from 'history';
+import type {AxiosError, AxiosInstance} from 'axios';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import type {Comment, CommentAuth, FavoriteAuth, NewOffer, Offer, User, UserAuth, UserRegister} from '../types/types';
+import {ApiRoute, AppRoute, HttpCode} from '../const';
+import {Token} from '../utils/utils';
+import OffersResponse from '../dto/offer/offers.response';
+import {adaptOffersToClient, adaptOfferToClient} from '../utils/adapters-to-client';
+import OfferResponse from '../dto/offer/offer.response';
 
 type Extra = {
   api: AxiosInstance;
@@ -32,9 +35,9 @@ export const fetchOffers = createAsyncThunk<Offer[], undefined, { extra: Extra }
   Action.FETCH_OFFERS,
   async (_, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Offer[]>(ApiRoute.Offers);
+    const { data } = await api.get<OffersResponse[]>(ApiRoute.Offers);
 
-    return data;
+    return adaptOffersToClient(data);
   });
 
 export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, { extra: Extra }>(
@@ -52,9 +55,9 @@ export const fetchOffer = createAsyncThunk<Offer, Offer['id'], { extra: Extra }>
     const { api, history } = extra;
 
     try {
-      const { data } = await api.get<Offer>(`${ApiRoute.Offers}/${id}`);
+      const { data } = await api.get<OfferResponse[]>(`${ApiRoute.Offers}/${id}`);
 
-      return data;
+      return adaptOfferToClient(data);
     } catch (error) {
       const axiosError = error as AxiosError;
 

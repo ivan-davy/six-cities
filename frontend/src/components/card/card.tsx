@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 import type { Offer } from '../../types/types';
 import { AppRoute } from '../../const';
-import { capitalize, getStarsWidth } from '../../utils';
+import { capitalize, getStarsWidth } from '../../utils/utils';
 import Bookmark from '../bookmark/bookmark';
+import {BACKEND_URL} from '../../api';
 
 type CardProps = Offer & {
   onMouseEnter?: (id: string) => void;
@@ -46,7 +47,7 @@ const Card = ({
         <Link to={`${AppRoute.Property}/${id}`}>
           <img
             className="place-card__image"
-            src={previewImage}
+            src={`${BACKEND_URL}${previewImage}`}
             width={isMini ? 150 : 260}
             height={isMini ? 110 : 200}
             alt={title}
