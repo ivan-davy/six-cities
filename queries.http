@@ -194,7 +194,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczZAb3Zlcmxvb2sub
 Content-Disposition: form-data; name="avatar"; filename="image.png"
 Content-Type: image/png
 
-< ./static/default-avatar.jpg
+< ./static/default-avatar.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
