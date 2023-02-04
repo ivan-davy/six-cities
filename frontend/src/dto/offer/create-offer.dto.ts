@@ -1,11 +1,9 @@
-import {Location} from '../../types/types';
-
 export default class CreateOfferDto {
   public title!: string;
 
   public description!: string;
 
-  public postedDate!: Date;
+  public postedDate!: string;
 
   public city!: string;
 
@@ -27,5 +25,5 @@ export default class CreateOfferDto {
 
   public features!: string[];
 
-  public coordinates!: Location;
+  public coordinates!: { latitude: string, longitude: string };
 }

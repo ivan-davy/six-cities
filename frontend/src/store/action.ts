@@ -5,13 +5,19 @@ import type {Comment, CommentAuth, FavoriteAuth, NewOffer, Offer, UserAuth, User
 import {ApiRoute, AppRoute, HttpCode} from '../const';
 import {Token} from '../utils/utils';
 import OffersResponse from '../dto/offer/offers.response';
-import {adaptCommentsToClient, adaptOffersToClient, adaptOfferToClient} from '../utils/adapters-to-client';
+import {
+  adaptCommentsToClient,
+  adaptCommentToClient,
+  adaptOffersToClient,
+  adaptOfferToClient
+} from '../utils/adapters-to-client';
 import OfferResponse from '../dto/offer/offer.response';
-import {adaptOfferToServer, adaptRegisterToServer} from '../utils/adapters-to-server';
+import {adaptNewCommentToServer, adaptOfferToServer, adaptRegisterToServer} from '../utils/adapters-to-server';
 import CommentResponse from '../dto/comment/comment.response';
 import StatusCheckUserResponse from '../dto/user/status-check-user.response';
 import LoginUserResponse from '../dto/user/login-user.response';
 import CreateUserResponse from '../dto/user/create-user.response';
+import CreateCommentResponse from '../dto/comment/create-comment.response';
 
 type Extra = {
   api: AxiosInstance;
@@ -187,9 +193,9 @@ export const postComment = createAsyncThunk<Comment, CommentAuth, { extra: Extra
   Action.POST_COMMENT,
   async ({ id, comment, rating }, { extra }) => {
     const { api } = extra;
-    const { data } = await api.post<Comment>(`${ApiRoute.Comments}/${id}`, { comment, rating });
+    const { data } = await api.post<CreateCommentResponse>(`${ApiRoute.Comments}`, adaptNewCommentToServer({ id, comment, rating }));
 
-    return data;
+    return adaptCommentToClient(data);
   });
 
 export const postFavorite = createAsyncThunk<
@@ -200,11 +206,11 @@ export const postFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.post<Offer>(
+    const { data } = await api.post<OfferResponse>(
       `${ApiRoute.Favorite}/${id}`
     );
 
-    return data;
+    return adaptOfferToClient(data);
   } catch (error) {
     const axiosError = error as AxiosError;
 
@@ -224,11 +230,11 @@ export const deleteFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.delete<Offer>(
+    const { data } = await api.delete<OfferResponse>(
       `${ApiRoute.Favorite}/${id}`
     );
 
-    return data;
+    return adaptOfferToClient(data);
   } catch (error) {
     const axiosError = error as AxiosError;
 

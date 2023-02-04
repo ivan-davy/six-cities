@@ -9,4 +9,5 @@ export default class SafeUserResponse {
 
   public status!: string;
 
+  public favorites?: string[];
 }

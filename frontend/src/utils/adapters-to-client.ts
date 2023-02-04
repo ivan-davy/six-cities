@@ -61,6 +61,15 @@ export const adaptSafeUserToClient =
     email: user.email,
   });
 
+export const adaptCommentToClient =
+    (comment: CommentResponse) => ({
+      id: comment.id,
+      comment: comment.text,
+      date: comment.postedDate,
+      rating: comment.rated,
+      user: {...adaptSafeUserToClient(comment.user), favorites: comment.user.favorites}
+    });
+
 export const adaptCommentsToClient =
   (comments: CommentResponse[]): Comment[] => comments.map(
     (comment: CommentResponse) => ({
@@ -68,6 +77,6 @@ export const adaptCommentsToClient =
       comment: comment.text,
       date: comment.postedDate,
       rating: comment.rated,
-      user: adaptSafeUserToClient(comment.user)
+      user: {...adaptSafeUserToClient(comment.user), favorites: comment.user.favorites}
     })
   );

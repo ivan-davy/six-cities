@@ -26,8 +26,7 @@ export default class OfferService implements OfferServiceInterface {
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${result.title}, ${result._id}`);
-    const userId = (result.user as mongoose.Types.ObjectId).toString();
-    result.user = await this.userService.findById(userId) as UserEntity;
+    result.user = await this.userService.findById(dto.user) as UserEntity;
     return result;
   }
 
@@ -184,11 +183,14 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async addFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
-    return this.userService.addToFavoritesById(userId, offerId);
+    await this.userService.addToFavoritesById(userId, offerId);
+    return this.findById(offerId, userId);
   }
 
   public async removeFavorite(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
-    return this.userService.removeFromFavoritesById(userId, offerId);
+    await this.userService.removeFromFavoritesById(userId, offerId);
+    return this.findById(offerId, userId);
+
   }
 
   public async setFavorite(
