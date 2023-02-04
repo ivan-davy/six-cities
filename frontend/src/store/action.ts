@@ -41,7 +41,7 @@ export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, { extra:
   Action.FETCH_FAVORITE_OFFERS,
   async (_, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Offer[]>(ApiRoute.Favorite);
+    const { data } = await api.get<Offer[]>(`${ApiRoute.Favorite}/get`);
 
     return data;
   });
@@ -98,7 +98,7 @@ export const fetchPremiumOffers = createAsyncThunk<Offer[], string, { extra: Ext
   Action.FETCH_PREMIUM_OFFERS,
   async (cityName, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Offer[]>(`${ApiRoute.Premium}?city=${cityName}`);
+    const { data } = await api.get<Offer[]>(`${ApiRoute.Premium}/${cityName}`);
 
     return data;
   });
@@ -107,7 +107,7 @@ export const fetchComments = createAsyncThunk<Comment[], Offer['id'], { extra: E
   Action.FETCH_COMMENTS,
   async (id, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Comment[]>(`${ApiRoute.Offers}/${id}${ApiRoute.Comments}`);
+    const { data } = await api.get<Comment[]>(`${ApiRoute.Comments}/${id}`);
 
     return data;
   });
@@ -179,7 +179,7 @@ export const postComment = createAsyncThunk<Comment, CommentAuth, { extra: Extra
   Action.POST_COMMENT,
   async ({ id, comment, rating }, { extra }) => {
     const { api } = extra;
-    const { data } = await api.post<Comment>(`${ApiRoute.Offers}/${id}${ApiRoute.Comments}`, { comment, rating });
+    const { data } = await api.post<Comment>(`${ApiRoute.Comments}/${id}`, { comment, rating });
 
     return data;
   });
