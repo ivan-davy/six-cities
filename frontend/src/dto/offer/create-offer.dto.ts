@@ -1,4 +1,6 @@
-export default class OfferDto {
+import {Location} from '../../types/types';
+
+export default class CreateOfferDto {
   public title!: string;
 
   public description!: string;
@@ -26,7 +28,4 @@ export default class OfferDto {
   public features!: string[];
 
   public coordinates!: Location;
-
-  public user!: string;
 }
-

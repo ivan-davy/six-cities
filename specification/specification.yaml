@@ -45,7 +45,7 @@ paths:
         "498":
           description: Неверный токен.
 
-
+  /offers:
     post:
       tags:
         - offers
@@ -97,9 +97,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/offerDetailed'
+                $ref: '#/components/schemas/offerDetailed'
 
         "404":
           description: Объявление не найдено.
@@ -629,11 +627,23 @@ components:
       properties:
         id:
           type: string
-          example: 6329c3d6a04ab1061c6425ea
+          example: 63de813ff73b6dac2842cf47
 
         email:
           type: string
           example: keks@htmlacademy.ru
+
+        name:
+          type: string
+          example: Keks
+
+        status:
+          type: string
+          example: Premium
+
+        avatarPath:
+          type: string
+          example: avatars/3849673.jpg
 
     commentNew:
       type: object

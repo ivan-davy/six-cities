@@ -1,12 +1,17 @@
 import type {History} from 'history';
 import type {AxiosError, AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import type {Comment, CommentAuth, FavoriteAuth, NewOffer, Offer, User, UserAuth, UserRegister} from '../types/types';
+import type {Comment, CommentAuth, FavoriteAuth, NewOffer, Offer, UserAuth, UserRegister} from '../types/types';
 import {ApiRoute, AppRoute, HttpCode} from '../const';
 import {Token} from '../utils/utils';
 import OffersResponse from '../dto/offer/offers.response';
-import {adaptOffersToClient, adaptOfferToClient} from '../utils/adapters-to-client';
+import {adaptCommentsToClient, adaptOffersToClient, adaptOfferToClient} from '../utils/adapters-to-client';
 import OfferResponse from '../dto/offer/offer.response';
+import {adaptOfferToServer, adaptRegisterToServer} from '../utils/adapters-to-server';
+import CommentResponse from '../dto/comment/comment.response';
+import StatusCheckUserResponse from '../dto/user/status-check-user.response';
+import LoginUserResponse from '../dto/user/login-user.response';
+import CreateUserResponse from '../dto/user/create-user.response';
 
 type Extra = {
   api: AxiosInstance;
@@ -44,9 +49,9 @@ export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, { extra:
   Action.FETCH_FAVORITE_OFFERS,
   async (_, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Offer[]>(`${ApiRoute.Favorite}/get`);
+    const { data } = await api.get<OffersResponse[]>(`${ApiRoute.Favorite}/get`);
 
-    return data;
+    return adaptOffersToClient(data);
   });
 
 export const fetchOffer = createAsyncThunk<Offer, Offer['id'], { extra: Extra }>(
@@ -55,7 +60,7 @@ export const fetchOffer = createAsyncThunk<Offer, Offer['id'], { extra: Extra }>
     const { api, history } = extra;
 
     try {
-      const { data } = await api.get<OfferResponse[]>(`${ApiRoute.Offers}/${id}`);
+      const { data } = await api.get<OfferResponse>(`${ApiRoute.Offers}/${id}`);
 
       return adaptOfferToClient(data);
     } catch (error) {
@@ -73,20 +78,20 @@ export const postOffer = createAsyncThunk<Offer, NewOffer, { extra: Extra }>(
   Action.POST_OFFER,
   async (newOffer, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<Offer>(ApiRoute.Offers, newOffer);
+    const { data } = await api.post<OfferResponse>(ApiRoute.Offers, adaptOfferToServer(newOffer));
     history.push(`${AppRoute.Property}/${data.id}`);
 
-    return data;
+    return adaptOfferToClient(data);
   });
 
 export const editOffer = createAsyncThunk<Offer, Offer, { extra: Extra }>(
   Action.EDIT_OFFER,
   async (offer, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.patch<Offer>(`${ApiRoute.Offers}/${offer.id}`, offer);
+    const { data } = await api.patch<OfferResponse>(`${ApiRoute.Offers}/${offer.id}`, adaptOfferToServer(offer));
     history.push(`${AppRoute.Property}/${data.id}`);
 
-    return data;
+    return adaptOfferToClient(data);
   });
 
 export const deleteOffer = createAsyncThunk<void, string, { extra: Extra }>(
@@ -101,18 +106,18 @@ export const fetchPremiumOffers = createAsyncThunk<Offer[], string, { extra: Ext
   Action.FETCH_PREMIUM_OFFERS,
   async (cityName, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Offer[]>(`${ApiRoute.Premium}/${cityName}`);
+    const { data } = await api.get<OffersResponse[]>(`${ApiRoute.Premium}/${cityName}`);
 
-    return data;
+    return adaptOffersToClient(data);
   });
 
 export const fetchComments = createAsyncThunk<Comment[], Offer['id'], { extra: Extra }>(
   Action.FETCH_COMMENTS,
   async (id, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<Comment[]>(`${ApiRoute.Comments}/${id}`);
+    const { data } = await api.get<CommentResponse[]>(`${ApiRoute.Comments}/${id}`);
 
-    return data;
+    return adaptCommentsToClient(data);
   });
 
 export const fetchUserStatus = createAsyncThunk<UserAuth['email'], undefined, { extra: Extra }>(
@@ -121,7 +126,7 @@ export const fetchUserStatus = createAsyncThunk<UserAuth['email'], undefined, { 
     const { api } = extra;
 
     try {
-      const { data } = await api.get<User>(ApiRoute.Login);
+      const { data } = await api.get<StatusCheckUserResponse>(ApiRoute.Login);
 
       return data.email;
     } catch (error) {
@@ -139,7 +144,7 @@ export const loginUser = createAsyncThunk<UserAuth['email'], UserAuth, { extra: 
   Action.LOGIN_USER,
   async ({ email, password }, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<User & { token: string }>(ApiRoute.Login, { email, password });
+    const { data } = await api.post<LoginUserResponse>(`${ApiRoute.User}${ApiRoute.Login}`, { email, password });
     const { token } = data;
 
     Token.save(token);
@@ -161,16 +166,16 @@ export const registerUser = createAsyncThunk<void, UserRegister, { extra: Extra 
   Action.REGISTER_USER,
   async ({ email, password, name, avatar, type }, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<{ id: string }>(ApiRoute.Register, {
+    const { data } = await api.post<CreateUserResponse>(`${ApiRoute.User}${ApiRoute.Register}`, adaptRegisterToServer({
       email,
       password,
       name,
       type,
-    });
+    }));
     if (avatar) {
       const payload = new FormData();
       payload.append('avatar', avatar);
-      await api.post(`/${data.id}${ApiRoute.Avatar}`, payload, {
+      await api.post(`${ApiRoute.User}/${data.id}${ApiRoute.Avatar}`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     }

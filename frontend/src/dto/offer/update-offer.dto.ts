@@ -1,3 +1,5 @@
+import {Location} from '../../types/types';
+
 export default class UpdateOfferDto {
   public title?: string;
 

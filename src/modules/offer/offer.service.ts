@@ -73,7 +73,7 @@ export default class OfferService implements OfferServiceInterface {
         },
         { $addFields: { id: {$toString: '$_id' } } }
       ]).exec();
-    return await this.setFavorite(result, userId) as DocumentType<OfferEntity>[];
+    return await this.setFavorite(result[0], userId) as DocumentType<OfferEntity>[];
   }
 
   public async find(userId: string | undefined, limit?: number | null): Promise<DocumentType<OfferEntity>[]> {

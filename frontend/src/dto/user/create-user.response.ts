@@ -1,4 +1,4 @@
-export default class SafeUserResponse {
+export default class CreateUserResponse {
   public id!: string;
 
   public email!: string;
@@ -9,4 +9,5 @@ export default class SafeUserResponse {
 
   public status!: string;
 
+  public favorites!: string;
 }
