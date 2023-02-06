@@ -1,0 +1,109 @@
+{
+  "api": {
+    "titles": [
+      "Under any circumstances, DO NOT FALL ASLEEP HERE",
+      "You will not survive this place",
+      "A true hell on Earth, for a small price",
+      "This accommodation is definitely NOT HAUNTED!",
+      "Ț̷̔̍̎̿̈́͜h̵̺̺̖̖̔̈́̓́͗ẻ̷̲̓̅s̸̹̻̣̤̑̈̀͝é̸̡͇̳͓͙̓̀̀͗ ̶̪̬̺̹̅̋̄͝w̸̱̍͑̓͗̽ą̷̦̭̠̖͊l̷͔̭͕̹̈́̄̕l̷͓̓ṣ̵̓̓͗̅͝ ̴̙̰͔́́w̸̢̳͉̳̽͊͌͝ạ̶̛̮͉̙͚̌̀n̴͉͍̖̰̏̂͊̃t̸̺̖̍͌̈̇̈ ̸̹̃b̶̛̘̬̹̭͌̈͝l̷̲̀o̷̹͔͕͐̓̉́ō̵̠̙̫d̴̛͉̯͛"
+    ],
+    "descriptions": [
+      "I AM IN YOUR WALLS I AM IN YOUR WALLS I AM IN YOUR WALLS I AM IN YOUR WALLS I AM IN YOUR WALLS",
+      "Do not mind the raspberry jam stains everywhere",
+      "An eyeless abomination with seven mouths. OJHgouajsdfkgN{ION[odkfgpdps",
+      "RUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUN",
+      "The last man on Earth sat alone in a room. There was a knock on the door...",
+      "Ȁ̴̛̺̞̑̕Å̴͚͇̭̬̩̱͛̈́͂̓̋̈̌̅A̵̧̦̫̯̦̝̭͇̬͇͓̞̖͈͕̓̐̇͑̕A̵̢̨̍̃̈́̓̏́̿̓À̷͚̬̖̳̳͕̗̰̠̤̗̪̻͂̓̕Ä̶͔͓͈́͊̓͋̈́͛̎́͜͝͝Ȃ̷̧̲͕̙͓͎͕̖̻̻̺̤̙͜A̴̢͈̤̬̟̮͉̬͐̓̉͒͒̌̄͜A̵̧̛͇̝̭̝̜̮͒͆̀̿̀͋̈́̏̕̕͠A̸̠͈̪̥̬͕͖͈̱̻̫̻̿̌̆̾̎͂̈́̀̔̀͌̑̌̕̕͜A̵̛̝̟͚͚̬͎̬͉̩̘̥̬̳̮̗͊͂͋̈́̍̋̾͑̏̄́͂̃Á̸͎̞̹͎͙̤̻͈͍̝͖̣̹̬̔͑͆̽̆̈̍͌̀̒̊͐̚͜͝À̵̲͈̹͈̘͇́Ą̸̨̲̗̱̯̖͉̝̻͈̜̉̀̒̋̆͑̀͝Ą̵̙̱̲͇̙̺͔̠́̾̑̈́͂̓̐̕͜͜͜A̵̢̱̪̖̤͔̹͎̮͖̘̟̞̘͋̐͆̈́̈́̓Ǎ̵̡͕͉̱͍̝͐͂̇̉̐͑͝A̴͉͎͐͐͗̍̂̀̒͛̋̑͝Ą̸̻̩̻̞͍͖̳̭̩͋̆͊͑̽̍̄̃̈͋̀̑͝A̸̹͔͌̃̂̒ͅÁ̶̢̺͕̖̺͚̠̞͍̺͇̱͌͗Â̴̡̨̛͇̜̹͍̙̲̑̄̔̂̾͊̐̈́̒͂͗̋͝Ą̷̮̭͎͊̏͆̊͒̉̋̇̄̀͛̄̇͜A̵̡̹̬̼̩̙̾̃̈́͐́͜͝Ǎ̷̦̘̻̳͙̾̈̂̕͜͝ͅĂ̵̺͚̔A̵̛̛̛̲̰̼͖̯̠̙͇̼̲͇̿͛̏̄͂͋̀̓̿͝A̸͍͔̜͕̮͕̜̣͈̐̓̆̽͒̐̓͆̈́̉͘̕̚͝ͅ",
+      "Happy happy happy place!!! Happy very happy"
+    ],
+    "postedDates": [
+      "2022-04-06T08:45:40.283Z",
+      "2021-02-05T10:44:36.123Z",
+      "2022-06-01T15:05:56.200Z",
+      "2022-07-02T05:34:55.344Z",
+      "2022-08-19T19:46:01.001Z"
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "imagePreviews": [
+      "http://localhost:4000/static/room1.jpg",
+      "http://localhost:4000/static/room2.jpg",
+      "http://localhost:4000/static/room3.jpg",
+      "http://localhost:4000/static/room4.jpg",
+      "http://localhost:4000/static/room5.jpg",
+      "http://localhost:4000/static/room6.jpg",
+      "http://localhost:4000/static/room7.jpg",
+      "http://localhost:4000/static/room8.jpg"
+    ],
+    "imagesSelection": [
+      "http://localhost:4000/static/room1.jpg",
+      "http://localhost:4000/static/room2.jpg",
+      "http://localhost:4000/static/room3.jpg",
+      "http://localhost:4000/static/room4.jpg",
+      "http://localhost:4000/static/room5.jpg",
+      "http://localhost:4000/static/room6.jpg",
+      "http://localhost:4000/static/room7.jpg",
+      "http://localhost:4000/static/room8.jpg"
+    ],
+    "types": [
+      "Apartment",
+      "House",
+      "Room",
+      "Hotel"
+    ],
+    "featuresSelection": [
+      "Breakfast",
+      "Air Conditioning",
+      "Laptop Friendly Workspace",
+      "Baby Seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "users": [
+      {
+        "name": "Volupticus III",
+        "email": "royal@mail.com",
+        "password": "amogus",
+        "status": "Premium",
+        "favorites": []
+      },
+      {
+        "name": "J̴̢̨̝̼̮̣͈̝͎̭͌͜a̵̞̤̳͚̾̈͘k̵̞̦͍̈́̏͑̅̂̆̎͗͐͝e̸̢͎̭͕̯̞̭̭̅̄̓̈̄̾̈́͗̀̃̀͒̕",
+        "email": "aaaaa@bbbb.cccc",
+        "password": "666_666",
+        "status": "Standard",
+        "favorites": []
+      },
+      {
+        "name": "Joshua",
+        "email": "wow@wow.com",
+        "password": "despacito",
+        "status": "Premium",
+        "favorites": []
+      },
+      {
+        "name": "Lucifer",
+        "email": "demon@hell.com",
+        "password": "mortalflesh",
+        "status": "Standard",
+        "favorites": []
+      },
+      {
+        "name": "BiGMaN",
+        "email": "rainbow@love.com",
+        "password": "HELPMEEE",
+        "status": "Standard",
+        "favorites": []
+      }
+    ]
+  }
+}
+
+
